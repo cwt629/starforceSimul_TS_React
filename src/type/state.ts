@@ -1,5 +1,12 @@
 import { Result } from "./result"
 
+export interface InitialData {
+    level: number,
+    start: number,
+    goal: number,
+    restoreCost: number
+}
+
 export interface LogData {
     result: Result,
     from: number,
@@ -8,6 +15,7 @@ export interface LogData {
 };
 
 export interface CurrentState {
+    ready: boolean,
     level: number,
     start: number,
     goal: number,
