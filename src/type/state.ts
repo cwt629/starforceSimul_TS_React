@@ -11,7 +11,7 @@ export interface LogData {
     result: Result,
     from: number,
     to: number,
-    fallen: boolean[] // 등급 하락 여부를 최근 2회치만 저장하여, 찬스타임 구현
+    fallen: boolean // 등급 하락 여부(찬스타임 구현 위함)
 };
 
 export interface CurrentState {
@@ -22,14 +22,14 @@ export interface CurrentState {
     maxStar: number,
     restoreCost: bigint,
     totalSpent: bigint,
-    success: number,
-    failure: number,
-    destroy: number,
+    totalSuccess: number,
+    totalFailure: number,
+    totalDestroy: number,
     currentStar: number,
-    nextCost: bigint,
-    nextSuccess: number,
-    nextFailure: number,
-    nextDestroy: number,
+    cost: bigint,
+    successPercent: number,
+    failurePercent: number,
+    destroyPercent: number,
     noStarcatch: boolean,
     preventDestroy: boolean,
     log: LogData[],

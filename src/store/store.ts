@@ -2,6 +2,8 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrentState, InitialData } from "../type/state";
 import { getMaximumStarByLevel } from "../utils/reinforce";
 
+const reinforceData = require("../data/reinforce-data.json");
+
 const initialState: CurrentState = {
     ready: false,
     level: 0,
@@ -10,14 +12,14 @@ const initialState: CurrentState = {
     maxStar: 0,
     restoreCost: BigInt(0),
     totalSpent: BigInt(0),
-    success: 0,
-    failure: 0,
-    destroy: 0,
+    totalSuccess: 0,
+    totalFailure: 0,
+    totalDestroy: 0,
     currentStar: 0,
-    nextCost: BigInt(0),
-    nextSuccess: 0,
-    nextFailure: 0,
-    nextDestroy: 0,
+    cost: BigInt(0),
+    successPercent: 0,
+    failurePercent: 0,
+    destroyPercent: 0,
     noStarcatch: false,
     preventDestroy: false,
     log: [],
@@ -29,6 +31,7 @@ const simulSlice = createSlice({
     name: 'simul',
     initialState,
     reducers: {
+        // 초기 설정 완료 시 호출되는 함수
         init: (state, action: PayloadAction<InitialData>) => {
             state = {
                 ready: true,
@@ -38,14 +41,14 @@ const simulSlice = createSlice({
                 maxStar: getMaximumStarByLevel(action.payload.level),
                 restoreCost: BigInt(action.payload.restoreCost),
                 totalSpent: BigInt(0),
-                success: 0,
-                failure: 0,
-                destroy: 0,
-                currentStar: 0,
-                nextCost: BigInt(0),
-                nextSuccess: 0,
-                nextFailure: 0,
-                nextDestroy: 0,
+                totalSuccess: 0,
+                totalFailure: 0,
+                totalDestroy: 0,
+                currentStar: action.payload.start,
+                cost: BigInt(0),
+                successPercent: 0,
+                failurePercent: 0,
+                destroyPercent: 0,
                 noStarcatch: false,
                 preventDestroy: false,
                 log: [],
