@@ -1,6 +1,7 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrentState, InitialData } from "../type/state";
 import { getMaximumStarByLevel } from "../utils/reinforce";
+import { getUpgradeCost } from "../utils/cost";
 
 const reinforceData = require("../data/reinforce-data.json");
 
@@ -24,7 +25,8 @@ const initialState: CurrentState = {
     preventDestroy: false,
     log: [],
     isChance: false,
-    achieved: false
+    achieved: false,
+    ableToFall: false
 };
 
 const simulSlice = createSlice({
@@ -44,15 +46,16 @@ const simulSlice = createSlice({
             state.totalFailure = 0;
             state.totalDestroy = 0;
             state.currentStar = action.payload.start;
-            state.cost = BigInt(0);
-            state.successPercent = 0;
-            state.failurePercent = 0;
-            state.destroyPercent = 0;
+            state.cost = getUpgradeCost(action.payload.level, action.payload.start);
+            state.successPercent = reinforceData.percentage[action.payload.start].success;
+            state.destroyPercent = reinforceData.percentage[action.payload.start].destroy;
+            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
             state.noStarcatch = false;
             state.preventDestroy = false;
             state.log = [];
             state.isChance = false;
             state.achieved = false;
+            state.ableToFall = !reinforceData.keeplevel[action.payload.start]
         }
     }
 });

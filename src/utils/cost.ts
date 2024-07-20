@@ -1,4 +1,5 @@
 export function getUpgradeCost(level: number, star: number): bigint {
+    let cost: number = 0;
     switch (star) {
         // 0~9성
         case 0:
@@ -11,22 +12,28 @@ export function getUpgradeCost(level: number, star: number): bigint {
         case 7:
         case 8:
         case 9:
-            return BigInt(1000 + Math.pow(level, 3) * (star + 1) / 36);
+            cost = 1000 + Math.pow(level, 3) * (star + 1) / 36;
+            break;
         // 10성
         case 10:
-            return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 571);
+            cost = 1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 571;
+            break;
         // 11성
         case 11:
-            return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 314);
+            cost = 1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 314;
+            break;
         // 12성
         case 12:
-            return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 214);
+            cost = 1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 214;
+            break;
         // 13성
         case 13:
-            return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 157);
+            cost = 1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 157;
+            break;
         // 14성
         case 14:
-            return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 107);
+            cost = 1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 107;
+            break;
         // 15-24성
         case 15:
         case 16:
@@ -38,9 +45,15 @@ export function getUpgradeCost(level: number, star: number): bigint {
         case 22:
         case 23:
         case 24:
-            return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 200);
-
+            cost = 1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 200;
+            break;
         default:
-            return BigInt(0);
+            cost = 0;
+            break;
     }
+
+    // 계산된 값을 10의 자리에서 반올림한다
+    cost = Math.round(cost / 10) * 10;
+
+    return BigInt(cost);
 }

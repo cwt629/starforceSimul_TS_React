@@ -34,5 +34,6 @@ export interface CurrentState {
     preventDestroy: boolean,
     log: LogData[],
     isChance: boolean,
-    achieved: boolean
+    achieved: boolean,
+    ableToFall: boolean
 };
