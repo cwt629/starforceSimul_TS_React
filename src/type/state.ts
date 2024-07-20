@@ -19,6 +19,7 @@ export interface CurrentState {
     level: number,
     start: number,
     goal: number,
+    maxStar: number,
     restoreCost: bigint,
     totalSpent: bigint,
     success: number,

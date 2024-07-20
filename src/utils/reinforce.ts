@@ -1,4 +1,4 @@
-import { Result } from "../src/type/result";
+import { Result } from "../type/result";
 
 // 성공 확률과 파괴 확률을 토대로 강화 결과를 반환하는 함수
 export function getReinforceResult(success: number, destroy: number = 0): Result {
@@ -10,4 +10,14 @@ export function getReinforceResult(success: number, destroy: number = 0): Result
     if (rand <= success + destroy) return Result.destroy;
     // 실패
     return Result.failure;
+}
+
+// 특정 레벨의 최대 강화 수치를 반환하는 함수
+export function getMaximumStarByLevel(level: number): number {
+    if (level < 95) return 5;
+    if (level < 108) return 8;
+    if (level < 118) return 10;
+    if (level < 128) return 15;
+    if (level < 138) return 20;
+    return 25;
 }

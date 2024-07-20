@@ -41,6 +41,6 @@ export function getUpgradeCost(level: number, star: number): bigint {
             return BigInt(1000 + Math.pow(level, 3) * Math.pow(star + 1, 2.7) / 200);
 
         default:
-            return 0n;
+            return BigInt(0);
     }
 }
