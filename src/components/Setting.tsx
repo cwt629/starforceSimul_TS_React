@@ -26,13 +26,16 @@ function Setting() {
     return (
         <form className="setting" onSubmit={(e) => handleFormSubmit(e)}>
             <h3>시뮬레이션 설정</h3>
-            <table>
+            <table className="table table-bordered">
                 <tr>
-                    <td>장비 레벨 *</td>
+                    <td width={150}>장비 레벨 *</td>
                     <td colSpan={2}>
-                        <input type="text" name="level" placeholder="ex) 150, 160, 200, 250"
-                            value={level} maxLength={3}
-                            onChange={(e) => setLevel(e.target.value)} /> 레벨
+                        <div className="input-group" style={{ width: "300px" }}>
+                            <input type="text" className="form-control" name="level" placeholder="ex) 150, 160, 200, 250"
+                                value={level} maxLength={3} required
+                                onChange={(e) => setLevel(e.target.value)} />
+                            <span className="input-group-text">레벨</span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -41,21 +44,36 @@ function Setting() {
                     <td>목표</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="starfrom" value={from} placeholder="0~24 정수" maxLength={2}
-                        onChange={(e) => setFrom(e.target.value)} />성</td>
-                    <td><input type="text" name="starto" value={to} placeholder="1~25 정수" maxLength={2}
-                        onChange={(e) => setTo(e.target.value)} />성</td>
+                    <td>
+                        <div className="input-group" style={{ width: "150px" }}>
+                            <input type="text" name="starfrom" className="form-control" value={from} placeholder="0~24 정수" maxLength={2} required
+                                onChange={(e) => setFrom(e.target.value)}
+                            />
+                            <span className="input-group-text">성</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="input-group" style={{ width: "150px" }}>
+                            <input type="text" name="starto" className="form-control" value={to} placeholder="1~25 정수" maxLength={2} required
+                                onChange={(e) => setTo(e.target.value)}
+                            />
+                            <span className="input-group-text">성</span>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
-                    <td>장비 복구 비용</td>
+                    <td>복구 비용</td>
                     <td colSpan={2}>
-                        <input type="text" name="restorecost" value={restoreCost}
-                            onChange={(e) => setRestoreCost(e.target.value)} /> 메소
-                        <div className="explain">복구 비용은 선택 사항이며, 0메소로 입력 시 파괴된 장비의 개수로 결과가 안내됩니다.</div>
+                        <div className="input-group" style={{ width: "300px" }}>
+                            <input type="text" name="restorecost" className="form-control" value={restoreCost}
+                                onChange={(e) => setRestoreCost(e.target.value)} />
+                            <span className="input-group-text">메소</span>
+                        </div>
+                        <div className="explain">0메소로 입력 시 파괴된 장비의 개수로 결과가 안내됩니다.</div>
                     </td>
                 </tr>
             </table>
-            <button type="submit">시작</button>
+            <button type="submit" className="btn btn-success">시작</button>
         </form>
     )
 }
