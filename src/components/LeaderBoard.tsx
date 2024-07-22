@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { CurrentState } from "../type/state";
 import { Result } from "../type/result";
+import { isChance } from "../utils/chance";
 
 function LeaderBoard() {
     const state: CurrentState = useSelector((state: RootState) => (state));
@@ -50,6 +51,7 @@ function LeaderBoard() {
                 </table>
 
                 <div>
+                    {isChance(state.log) ? <div>CHANCE TIME!</div> : ''}
                     현재 단계: {state.currentStar}성<br />
                     강화 비용: {state.cost.toLocaleString()}메소<br />
                     성공 확률: {state.successPercent.toFixed(1)}%<br />

@@ -3,6 +3,7 @@ import { CurrentState, InitialData } from "../type/state";
 import { getMaximumStarByLevel } from "../utils/reinforce";
 import { getUpgradeCost } from "../utils/cost";
 import { Result } from "../type/result";
+import { isChance } from "../utils/chance";
 
 const reinforceData = require("../data/reinforce-data.json");
 const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
@@ -26,7 +27,6 @@ const initialState: CurrentState = {
     noStarcatch: false,
     preventDestroy: false,
     log: [],
-    isChance: false,
     achieved: false,
     ableToFall: false
 };
@@ -55,7 +55,6 @@ const simulSlice = createSlice({
             state.noStarcatch = false;
             state.preventDestroy = false;
             state.log = [];
-            state.isChance = false;
             state.achieved = false;
             state.ableToFall = !reinforceData.keeplevel[action.payload.start]
         },
@@ -95,6 +94,13 @@ const simulSlice = createSlice({
             state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
             state.failurePercent = 100 - state.successPercent - state.destroyPercent;
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+
+            // 찬스타임 구현
+            if (isChance(state.log)) {
+                state.successPercent = 100;
+                state.failurePercent = 0;
+                state.destroyPercent = 0;
+            }
         },
         // 파괴 처리
         grantDestroy: (state) => {

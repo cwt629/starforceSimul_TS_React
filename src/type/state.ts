@@ -33,7 +33,6 @@ export interface CurrentState {
     noStarcatch: boolean,
     preventDestroy: boolean,
     log: LogData[],
-    isChance: boolean,
     achieved: boolean,
     ableToFall: boolean
 };
