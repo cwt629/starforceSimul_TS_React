@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { InitialData } from "../type/state";
-import { init } from "../store/store";
-import { useDispatch } from "react-redux";
+import { init, RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
 
 function Setting() {
     const [level, setLevel] = useState("");
@@ -9,6 +9,7 @@ function Setting() {
     const [to, setTo] = useState("");
     const [restoreCost, setRestoreCost] = useState("0");
 
+    const ready: boolean = useSelector((state: RootState) => (state.ready));
     const dispatch = useDispatch();
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +34,8 @@ function Setting() {
                         <div className="input-group" style={{ width: "300px" }}>
                             <input type="text" className="form-control" name="level" placeholder="ex) 150, 160, 200, 250"
                                 value={level} maxLength={3} required
-                                onChange={(e) => setLevel(e.target.value)} />
+                                onChange={(e) => setLevel(e.target.value)}
+                            />
                             <span className="input-group-text">레벨</span>
                         </div>
                     </td>

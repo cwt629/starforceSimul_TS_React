@@ -8,7 +8,7 @@ function LeaderBoard() {
     return (
         state.ready ?
             (<div>
-                <table>
+                <table className="table table-bordered">
                     <tr>
                         <td>장비 레벨</td>
                         <td>{state.level}</td>
@@ -26,12 +26,21 @@ function LeaderBoard() {
                         <td>{state.totalSpent.toString()}메소</td>
                     </tr>
                 </table>
+                <table className="table table-bordered">
+                    <tr>
+                        <td>성공</td><td>실패</td><td>파괴</td>
+                    </tr>
+                    <tr>
+                        <td>{state.totalSuccess.toLocaleString()}</td>
+                        <td>{state.totalFailure.toLocaleString()}</td>
+                        <td>{state.totalDestroy.toLocaleString()}</td>
+                    </tr>
+                </table>
                 <div>
-                    강화 비용: {state.cost.toString()}메소<br />
-                    성공 확률: {state.successPercent}%<br />
-                    실패({state.ableToFall ? "하락" : "유지"}) 확률: {state.failurePercent}%<br />
-                    파괴 확률: {state.destroyPercent}%
-
+                    강화 비용: {state.cost.toLocaleString()}메소<br />
+                    성공 확률: {state.successPercent.toFixed(1)}%<br />
+                    실패({state.ableToFall ? "하락" : "유지"}) 확률: {state.failurePercent.toFixed(1)}%<br />
+                    {state.destroyPercent > 0 ? `파괴 확률: ${state.destroyPercent.toFixed(1)}%` : ``}
                 </div>
             </div>) : (<></>)
     )
