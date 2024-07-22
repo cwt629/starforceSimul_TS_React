@@ -75,7 +75,7 @@ const simulSlice = createSlice({
             // 목표 달성 시
             if (!state.achieved && state.currentStar === state.goal) {
                 alert(`목표 단계인 ${state.goal}성에 도달했습니다!\n
-                    총 소비: ${state.totalSpent}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy + "개" : ""}`);
+                    총 소비: ${state.totalSpent.toLocaleString()}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy.toLocaleString() + "개" : ""}`);
                 state.achieved = true;
             }
         },
