@@ -71,6 +71,13 @@ const simulSlice = createSlice({
             state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
             state.failurePercent = 100 - state.successPercent - state.destroyPercent;
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+
+            // 목표 달성 시
+            if (!state.achieved && state.currentStar === state.goal) {
+                alert(`목표 단계인 ${state.goal}성에 도달했습니다!\n
+                    총 소비: ${state.totalSpent}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy + "개" : ""}`);
+                state.achieved = true;
+            }
         },
         // 실패 처리
         grantFailure: (state) => {
@@ -93,7 +100,7 @@ const simulSlice = createSlice({
         grantDestroy: (state) => {
             // log 저장
             state.log.push({ result: Result.destroy, from: state.currentStar, to: STAR_WHEN_DESTROYED, fallen: false });
-            state.totalSpent += state.cost;
+            state.totalSpent += state.cost + state.restoreCost;
             state.totalDestroy++;
             state.currentStar = STAR_WHEN_DESTROYED;
             state.cost = getUpgradeCost(state.level, state.currentStar);
