@@ -2,8 +2,10 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrentState, InitialData } from "../type/state";
 import { getMaximumStarByLevel } from "../utils/reinforce";
 import { getUpgradeCost } from "../utils/cost";
+import { Result } from "../type/result";
 
 const reinforceData = require("../data/reinforce-data.json");
+const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
 
 const initialState: CurrentState = {
     ready: false,
@@ -56,11 +58,54 @@ const simulSlice = createSlice({
             state.isChance = false;
             state.achieved = false;
             state.ableToFall = !reinforceData.keeplevel[action.payload.start]
+        },
+        // 성공 처리
+        grantSuccess: (state) => {
+            // log 저장
+            state.log.push({ result: Result.success, from: state.currentStar, to: state.currentStar + 1, fallen: false });
+            state.totalSpent += state.cost;
+            state.totalSuccess++;
+            state.currentStar++;
+            state.cost = getUpgradeCost(state.level, state.currentStar);
+            state.successPercent = reinforceData.percentage[state.currentStar].success;
+            state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+        },
+        // 실패 처리
+        grantFailure: (state) => {
+            const nextStar: number = (state.ableToFall) ? state.currentStar - 1 : state.currentStar;
+            // log 저장
+            state.log.push({
+                result: Result.failure, from: state.currentStar,
+                to: nextStar, fallen: state.ableToFall
+            });
+            state.totalSpent += state.cost;
+            state.totalFailure++;
+            state.currentStar = nextStar;
+            state.cost = getUpgradeCost(state.level, state.currentStar);
+            state.successPercent = reinforceData.percentage[state.currentStar].success;
+            state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+        },
+        // 파괴 처리
+        grantDestroy: (state) => {
+            // log 저장
+            state.log.push({ result: Result.destroy, from: state.currentStar, to: STAR_WHEN_DESTROYED, fallen: false });
+            state.totalSpent += state.cost;
+            state.totalDestroy++;
+            state.currentStar = STAR_WHEN_DESTROYED;
+            state.cost = getUpgradeCost(state.level, state.currentStar);
+            state.successPercent = reinforceData.percentage[state.currentStar].success;
+            state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            state.ableToFall = !reinforceData.keeplevel[state.currentStar];
         }
     }
 });
 
-export const { init } = simulSlice.actions;
+export const { init, grantSuccess, grantFailure, grantDestroy } = simulSlice.actions;
 
 export const store = configureStore({
     reducer: simulSlice.reducer

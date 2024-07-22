@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { InitialData } from "../type/state";
-import { init, RootState } from "../store/store";
+import { Dispatcher, init, RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 
 function Setting() {
@@ -10,7 +10,7 @@ function Setting() {
     const [restoreCost, setRestoreCost] = useState("0");
 
     const ready: boolean = useSelector((state: RootState) => (state.ready));
-    const dispatch = useDispatch();
+    const dispatch: Dispatcher = useDispatch();
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
