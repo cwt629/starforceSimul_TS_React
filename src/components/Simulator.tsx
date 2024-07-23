@@ -10,6 +10,12 @@ function Simulator() {
 
     // 버튼 클릭 이벤트
     const handleClick = () => {
+        // 이미 최대 강화 단계인 경우
+        if (state.currentStar >= state.maxStar) {
+            alert("이미 최대 강화 단계에 도달했습니다.");
+            return;
+        }
+
         const result: Result = getReinforceResult(state.successPercent, state.destroyPercent);
         switch (result) {
             case Result.success:

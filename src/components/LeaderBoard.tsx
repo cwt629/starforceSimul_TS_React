@@ -53,10 +53,17 @@ function LeaderBoard() {
                 <div>
                     {isChance(state.log) ? <div>CHANCE TIME!</div> : ''}
                     현재 단계: {state.currentStar}성<br />
-                    강화 비용: {state.cost.toLocaleString()}메소<br />
-                    성공 확률: {state.successPercent.toFixed(1)}%<br />
-                    실패({state.ableToFall ? "하락" : "유지"}) 확률: {state.failurePercent.toFixed(1)}%<br />
-                    {state.destroyPercent > 0 ? `파괴 확률: ${state.destroyPercent.toFixed(1)}%` : ``}
+                    {state.currentStar < state.maxStar ? <>
+                        강화 비용: {state.cost.toLocaleString()}메소<br />
+                        성공 확률: {state.successPercent.toFixed(1)}%<br />
+                        실패({state.ableToFall ? "하락" : "유지"}) 확률: {state.failurePercent.toFixed(1)}%<br />
+                        {state.destroyPercent > 0 ? `파괴 확률: ${state.destroyPercent.toFixed(1)}%` : ``}
+                    </>
+                        :
+                        <>
+                            최고 강화 단계인 {state.maxStar}성에 도달했습니다!
+                        </>}
+
                 </div>
             </div>) : (<></>)
     )

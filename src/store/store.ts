@@ -49,14 +49,17 @@ const simulSlice = createSlice({
             state.totalDestroy = 0;
             state.currentStar = action.payload.start;
             state.cost = getUpgradeCost(action.payload.level, action.payload.start);
-            state.successPercent = reinforceData.percentage[action.payload.start].success;
-            state.destroyPercent = reinforceData.percentage[action.payload.start].destroy;
-            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            // 최대 강화 단계 미만인 경우만 설정
+            if (state.currentStar < state.maxStar) {
+                state.successPercent = reinforceData.percentage[action.payload.start].success;
+                state.destroyPercent = reinforceData.percentage[action.payload.start].destroy;
+                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+                state.ableToFall = !reinforceData.keeplevel[action.payload.start]
+            }
             state.noStarcatch = false;
             state.preventDestroy = false;
             state.log = [];
             state.achieved = false;
-            state.ableToFall = !reinforceData.keeplevel[action.payload.start]
         },
         // 성공 처리
         grantSuccess: (state) => {
@@ -66,10 +69,14 @@ const simulSlice = createSlice({
             state.totalSuccess++;
             state.currentStar++;
             state.cost = getUpgradeCost(state.level, state.currentStar);
-            state.successPercent = reinforceData.percentage[state.currentStar].success;
-            state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
-            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
-            state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+            // 최대 강화 단계 미만인 경우만 설정
+            if (state.currentStar < state.maxStar) {
+                state.successPercent = reinforceData.percentage[state.currentStar].success;
+                state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+                state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+            }
+
 
             // 목표 달성 시
             if (!state.achieved && state.currentStar === state.goal) {
