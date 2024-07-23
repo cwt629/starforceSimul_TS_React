@@ -8,3 +8,16 @@
 .App * {
   margin: 10px auto;
 }
+
+div.star-div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 280px;
+}
+
+span.star {
+  text-align: center;
+  width: 80px;
+  margin: 0 5px;
+}

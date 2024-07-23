@@ -3,6 +3,7 @@ import { RootState } from "../store/store";
 import { CurrentState } from "../type/state";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
+import StarDisplay from "./StarDisplay";
 
 function LeaderBoard() {
     const state: CurrentState = useSelector((state: RootState) => (state));
@@ -51,6 +52,7 @@ function LeaderBoard() {
                 </table>
 
                 <div>
+                    <StarDisplay />
                     {isChance(state.log) ? <div>CHANCE TIME!</div> : ''}
                     현재 단계: {state.currentStar}성<br />
                     {state.currentStar < state.maxStar ? <>
