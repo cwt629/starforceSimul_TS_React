@@ -3,3 +3,9 @@ export enum Result {
     failure,
     destroy
 };
+
+export interface ResultExpectation {
+    success: number,
+    failure: number,
+    destroy: number
+};

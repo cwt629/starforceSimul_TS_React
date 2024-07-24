@@ -1,4 +1,4 @@
-import { Result } from "../type/result";
+import { Result, ResultExpectation } from "../type/result";
 
 // 성공 확률과 파괴 확률을 토대로 강화 결과를 반환하는 함수
 export function getReinforceResult(success: number, destroy: number = 0): Result {
@@ -26,4 +26,21 @@ export function getMaximumStarByLevel(level: number): number {
 export function isPreventableStar(star: number): boolean {
     // 15~16성만 파괴방지 가능
     return (star >= 15 && star < 17);
+}
+
+// 스타캐치 적용에 따라 성공, 실패, 파괴 확률을 반환하는 함수
+export function getExpectationByStarcatch(original: ResultExpectation, catched: boolean = false): ResultExpectation {
+    if (!catched)
+        return original;
+
+    let result: ResultExpectation = {
+        success: original.success * 1.05,
+        failure: 0,
+        destroy: 0
+    };
+
+    result.destroy = (original.success < 100) ? original.destroy * (100 - result.success) / (100 - original.success) : 0;
+    result.failure = 100 - result.success - result.destroy;
+
+    return result;
 }

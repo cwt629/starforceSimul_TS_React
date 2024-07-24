@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CurrentState } from "../type/state";
 import { Dispatcher, grantDestroy, grantFailure, grantSuccess, setPreventDestroy, setStarcatch } from "../store/store";
-import { Result } from "../type/result";
-import { getReinforceResult, isPreventableStar } from "../utils/reinforce";
+import { Result, ResultExpectation } from "../type/result";
+import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
 import React from "react";
 
 function Simulator() {
@@ -29,7 +29,18 @@ function Simulator() {
             return;
         }
 
-        const result: Result = getReinforceResult(state.successPercent, state.destroyPercent);
+        // 현재 적용되는 확률 정보
+        let currentExp: ResultExpectation = {
+            success: state.successPercent,
+            failure: 0,
+            destroy: (isPreventableStar(state.currentStar) && state.preventDestroy) ? 0 : state.destroyPercent // 파괴방지 적용
+        };
+        currentExp.failure = 100 - currentExp.success - currentExp.destroy;
+
+        // 실제로 적용될 확률 정보
+        let finalExp: ResultExpectation = getExpectationByStarcatch(currentExp, !state.noStarcatch);
+
+        const result: Result = getReinforceResult(finalExp.success, finalExp.destroy);
         switch (result) {
             case Result.success:
                 dispatch(grantSuccess());
