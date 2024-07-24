@@ -30,7 +30,7 @@ export function isPreventableStar(star: number): boolean {
 
 // 스타캐치 적용에 따라 성공, 실패, 파괴 확률을 반환하는 함수
 export function getExpectationByStarcatch(original: ResultExpectation, catched: boolean = false): ResultExpectation {
-    if (!catched)
+    if (!catched || original.success === 100)
         return original;
 
     let result: ResultExpectation = {

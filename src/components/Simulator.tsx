@@ -44,7 +44,7 @@ function Simulator() {
 
         // 실제로 적용될 확률 정보
         let finalExp: ResultExpectation = getExpectationByStarcatch(currentExp, !noStarcatch);
-
+        console.log(finalExp)
         const result: Result = getReinforceResult(finalExp.success, finalExp.destroy);
         switch (result) {
             case Result.success:
@@ -65,11 +65,13 @@ function Simulator() {
         <div className="simulator">
             <div className="form-check">
                 <input type="checkbox" className="form-check-input" id="starcatch"
+                    checked={noStarcatch}
                     onChange={(e) => handleStarCatch(e)} />
                 <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
             </div>
             <div className="form-check">
                 <input type="checkbox" className="form-check-input" id="destroyShield"
+                    checked={preventDestroy}
                     onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
                 <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
             </div>
