@@ -26,7 +26,8 @@ export interface CurrentState {
     totalFailure: number,
     totalDestroy: number,
     currentStar: number,
-    cost: bigint,
+    originalCost: bigint, // 기존 비용
+    cost: bigint, // 할인, 파괴방지 추가비용 등이 적용된 비용
     successPercent: number,
     failurePercent: number,
     destroyPercent: number,
