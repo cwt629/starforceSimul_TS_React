@@ -73,19 +73,20 @@ function LeaderBoard() {
 
                 <div>
                     <StarDisplay />
-                    {isChance(log) ? <div>CHANCE TIME!</div> : ''}
-                    현재 단계: {currentStar}성<br />
-                    {currentStar < maxStar ? <>
-                        강화 비용: {cost.toLocaleString()}메소<br />
-                        성공 확률: {successPercent.toFixed(1)}%<br />
-                        실패({ableToFall ? "하락" : "유지"}) 확률: {failurePercent.toFixed(1)}%<br />
-                        {destroyPercent > 0 ? `파괴 확률: ${destroyPercent.toFixed(1)}%` : ``}
-                    </>
-                        :
-                        <>
-                            최고 강화 단계인 {maxStar}성에 도달했습니다!
-                        </>}
-
+                    <div className="upgrade-info">
+                        {isChance(log) ? <div>CHANCE TIME!</div> : ''}
+                        현재 단계: {currentStar}성<br />
+                        {currentStar < maxStar ? <>
+                            강화 비용: {cost.toLocaleString()}메소<br />
+                            성공 확률: {successPercent.toFixed(1)}%<br />
+                            실패({ableToFall ? "하락" : "유지"}) 확률: {failurePercent.toFixed(1)}%<br />
+                            {destroyPercent > 0 ? `파괴 확률: ${destroyPercent.toFixed(1)}%` : ``}
+                        </>
+                            :
+                            <>
+                                최고 강화 단계인 {maxStar}성에 도달했습니다!
+                            </>}
+                    </div>
                 </div>
             </div>) : (<></>)
     )

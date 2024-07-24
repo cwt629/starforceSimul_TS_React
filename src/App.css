@@ -9,6 +9,12 @@
   margin: 10px auto;
 }
 
+/* LeaderBoard 컴포넌트 */
+div.upgrade-info {
+  height: 140px;
+  overflow-y: auto;
+}
+
 /* StarDisplay 컴포넌트 */
 div.star-div {
   display: flex;
@@ -23,6 +29,7 @@ span.star {
   margin: 0 5px;
 }
 
+/* Simulator 컴포넌트 */
 div.simulator {
   display: flex;
   justify-content: center;
