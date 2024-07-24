@@ -152,7 +152,10 @@ const simulSlice = createSlice({
 export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy } = simulSlice.actions;
 
 export const store = configureStore({
-    reducer: simulSlice.reducer
+    reducer: simulSlice.reducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false
+    })
 });
 
 export type RootState = ReturnType<typeof store.getState>;
