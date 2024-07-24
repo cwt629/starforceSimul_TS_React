@@ -24,7 +24,7 @@ function StarDisplay() {
     }
 
     return (<div className="star-div">
-        {generateStarDisplay().map((star, i) => (<span key={i}><span className="star">{star}</span>{i === 2 ? <br /> : <></>}</span>))}
+        {generateStarDisplay().map((star, i) => (<span className="star" key={i}>{star}</span>))}
     </div>)
 }
 
