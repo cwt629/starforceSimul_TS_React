@@ -9,6 +9,7 @@
   margin: 10px auto;
 }
 
+/* StarDisplay 컴포넌트 */
 div.star-div {
   display: flex;
   justify-content: center;
@@ -20,4 +21,23 @@ span.star {
   text-align: center;
   width: 80px;
   margin: 0 5px;
+}
+
+div.simulator {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+div.simulator>* {
+  margin: 10px;
+}
+
+div.simulator>div.form-check {
+  display: flex;
+  align-items: center;
+}
+
+div.simulator>div.form-check>* {
+  padding: 0 5px;
 }

@@ -121,11 +121,21 @@ const simulSlice = createSlice({
             state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
             state.failurePercent = 100 - state.successPercent - state.destroyPercent;
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+        },
+        // 스타캐치 해제 체크 처리
+        setStarcatch: (state, action: PayloadAction<boolean>) => {
+            state.noStarcatch = action.payload;
+            console.log("스타캐치 해제: " + state.noStarcatch);
+        },
+        // 파괴방지 체크 처리
+        setPreventDestroy: (state, action: PayloadAction<boolean>) => {
+            state.preventDestroy = action.payload;
+            console.log("파괴방지: " + state.preventDestroy);
         }
     }
 });
 
-export const { init, grantSuccess, grantFailure, grantDestroy } = simulSlice.actions;
+export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy } = simulSlice.actions;
 
 export const store = configureStore({
     reducer: simulSlice.reducer
