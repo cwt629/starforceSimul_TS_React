@@ -72,9 +72,7 @@ const simulSlice = createSlice({
             state.currentStar++;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
 
-            // 파괴방지로 들어가는 penalty
-            let preventPenalty = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            state.cost = state.originalCost * preventPenalty;
+
             // 최대 강화 단계 미만인 경우만 설정
             if (state.currentStar < state.maxStar) {
                 state.successPercent = reinforceData.percentage[state.currentStar].success;
@@ -83,6 +81,9 @@ const simulSlice = createSlice({
                 state.ableToFall = !reinforceData.keeplevel[state.currentStar];
             }
 
+            // 파괴방지로 들어가는 penalty
+            let preventPenalty = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            state.cost = state.originalCost * preventPenalty;
 
             // 목표 달성 시
             if (!state.achieved && state.currentStar === state.goal) {
