@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CurrentState } from "../type/state";
 import { Dispatcher, grantDestroy, grantFailure, grantSuccess, setPreventDestroy, setStarcatch } from "../store/store";
 import { Result } from "../type/result";
-import { getReinforceResult } from "../utils/reinforce";
+import { getReinforceResult, isPreventableStar } from "../utils/reinforce";
 import React from "react";
 
 function Simulator() {
@@ -54,7 +54,7 @@ function Simulator() {
             </div>
             <div className="form-check">
                 <input type="checkbox" className="form-check-input" id="destroyShield"
-                    onChange={(e) => handlePreventDestroy(e)} />
+                    onChange={(e) => handlePreventDestroy(e)} disabled={state.destroyPercent === 0 || !isPreventableStar(state.currentStar)} />
                 <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
             </div>
             <button type="button" className="btn btn-outline-primary"

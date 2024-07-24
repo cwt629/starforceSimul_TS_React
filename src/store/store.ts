@@ -125,12 +125,10 @@ const simulSlice = createSlice({
         // 스타캐치 해제 체크 처리
         setStarcatch: (state, action: PayloadAction<boolean>) => {
             state.noStarcatch = action.payload;
-            console.log("스타캐치 해제: " + state.noStarcatch);
         },
         // 파괴방지 체크 처리
         setPreventDestroy: (state, action: PayloadAction<boolean>) => {
             state.preventDestroy = action.payload;
-            console.log("파괴방지: " + state.preventDestroy);
         }
     }
 });

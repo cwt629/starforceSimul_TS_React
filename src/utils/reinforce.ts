@@ -21,3 +21,9 @@ export function getMaximumStarByLevel(level: number): number {
     if (level < 138) return 20;
     return 25;
 }
+
+// 특정 레벨에 파괴방지가 가능한지 여부를 반환하는 함수
+export function isPreventableStar(star: number): boolean {
+    // 15~16성만 파괴방지 가능
+    return (star >= 15 && star < 17);
+}
