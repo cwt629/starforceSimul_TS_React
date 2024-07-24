@@ -44,7 +44,7 @@ function Simulator() {
 
         // 실제로 적용될 확률 정보
         let finalExp: ResultExpectation = getExpectationByStarcatch(currentExp, !noStarcatch);
-        console.log(finalExp)
+
         const result: Result = getReinforceResult(finalExp.success, finalExp.destroy);
         switch (result) {
             case Result.success:
