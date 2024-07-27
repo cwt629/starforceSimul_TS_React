@@ -4,6 +4,7 @@ import { getMaximumStarByLevel, isPreventableStar } from "../utils/reinforce";
 import { getUpgradeCost } from "../utils/cost";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
+import { alertWithSwal } from "../utils/alert";
 
 const reinforceData = require("../data/reinforce-data.json");
 const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
@@ -87,8 +88,10 @@ const simulSlice = createSlice({
 
             // 목표 달성 시
             if (!state.achieved && state.currentStar === state.goal) {
-                alert(`목표 단계인 ${state.goal}성에 도달했습니다!\n
-                    총 소비: ${state.totalSpent.toLocaleString()}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy.toLocaleString() + "개" : ""}`);
+                alertWithSwal({
+                    icon: 'success', text: `목표 단계인 ${state.goal}성에 도달했습니다!\n총 소비: ${state.totalSpent.toLocaleString()}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy.toLocaleString() + "개" : ""}`,
+                    buttonClass: 'btn btn-success'
+                })
                 state.achieved = true;
             }
         },

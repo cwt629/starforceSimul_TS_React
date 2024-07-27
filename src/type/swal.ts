@@ -1,0 +1,1 @@
+export type SwalIcon = 'success' | 'error' | 'warning' | 'info' | 'question';

@@ -3,6 +3,9 @@ import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, setPre
 import { Result, ResultExpectation } from "../type/result";
 import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
 import React from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { alertWithSwal } from "../utils/alert";
 
 function Simulator() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
@@ -30,7 +33,7 @@ function Simulator() {
     const handleClick = () => {
         // 이미 최대 강화 단계인 경우
         if (currentStar >= maxStar) {
-            alert("이미 최대 강화 단계에 도달했습니다.");
+            alertWithSwal({ icon: 'info', text: '이미 최대 강화 단계에 도달했습니다.', buttonClass: 'btn btn-primary' });
             return;
         }
 
