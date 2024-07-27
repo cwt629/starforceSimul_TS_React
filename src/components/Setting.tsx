@@ -26,13 +26,13 @@ function Setting() {
     return (
         <form className="setting" onSubmit={(e) => handleFormSubmit(e)}>
             <h3>시뮬레이션 설정</h3>
-            <table className="table table-bordered">
+            <table className="table table-bordered setting">
                 <tbody>
                     <tr>
-                        <td width={150}>장비 레벨 *</td>
+                        <td className="header" style={{ width: '30%' }}>장비 레벨 *</td>
                         <td colSpan={2}>
-                            <div className="input-group" style={{ width: "300px" }}>
-                                <input type="text" className="form-control" name="level" placeholder="ex) 150, 160, 200, 250"
+                            <div className="input-group" style={{ width: "90%" }}>
+                                <input type="text" className="form-control" name="level" placeholder="ex) 150, 200"
                                     value={level} maxLength={3} required
                                     onChange={(e) => setLevel(e.target.value)}
                                 />
@@ -41,22 +41,22 @@ function Setting() {
                         </td>
                     </tr>
                     <tr>
-                        <td rowSpan={2}>시뮬레이션 목표 *</td>
-                        <td>시작</td>
-                        <td>목표</td>
+                        <td className="header" rowSpan={2}>시뮬레이션 목표 *</td>
+                        <td style={{ width: '35%' }}>시작</td>
+                        <td style={{ width: '35%' }}>목표</td>
                     </tr>
                     <tr>
                         <td>
-                            <div className="input-group" style={{ width: "150px" }}>
-                                <input type="text" name="starfrom" className="form-control" value={from} placeholder="0~24 정수" maxLength={2} required
+                            <div className="input-group" style={{ width: "80%" }}>
+                                <input type="text" name="starfrom" className="form-control" value={from} placeholder="" maxLength={2} required
                                     onChange={(e) => setFrom(e.target.value)}
                                 />
                                 <span className="input-group-text">성</span>
                             </div>
                         </td>
                         <td>
-                            <div className="input-group" style={{ width: "150px" }}>
-                                <input type="text" name="starto" className="form-control" value={to} placeholder="1~25 정수" maxLength={2} required
+                            <div className="input-group" style={{ width: "80%" }}>
+                                <input type="text" name="starto" className="form-control" value={to} placeholder="" maxLength={2} required
                                     onChange={(e) => setTo(e.target.value)}
                                 />
                                 <span className="input-group-text">성</span>
@@ -64,9 +64,9 @@ function Setting() {
                         </td>
                     </tr>
                     <tr>
-                        <td>복구 비용</td>
+                        <td className="header">복구 비용</td>
                         <td colSpan={2}>
-                            <div className="input-group" style={{ width: "300px" }}>
+                            <div className="input-group" style={{ width: "80%" }}>
                                 <input type="text" name="restorecost" className="form-control" value={restoreCost}
                                     onChange={(e) => setRestoreCost(e.target.value)} />
                                 <span className="input-group-text">메소</span>
