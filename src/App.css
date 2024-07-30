@@ -9,6 +9,22 @@
   margin: 10px auto;
 }
 
+/* Setting 컴포넌트 */
+div.explain {
+  color: #888;
+}
+
+div.form-warn {
+  color: red;
+  font-weight: 500;
+}
+
+div.restore-cost-show {
+  text-align: left;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
 /* LeaderBoard 컴포넌트 */
 div.upgrade-info {
   height: 140px;

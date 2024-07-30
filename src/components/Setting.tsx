@@ -2,6 +2,8 @@ import { useState } from "react";
 import { InitialData } from "../type/state";
 import { Dispatcher, init } from "../store/store";
 import { useDispatch } from "react-redux";
+import { isValidGoal, isValidLevel, isValidRestoreCost, isValidStart } from "../utils/validate";
+
 
 function Setting() {
     const [level, setLevel] = useState("");
@@ -11,6 +13,7 @@ function Setting() {
 
     const dispatch: Dispatcher = useDispatch();
 
+    // form 제출 이벤트
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const initialSet: InitialData = {
@@ -38,6 +41,10 @@ function Setting() {
                                 />
                                 <span className="input-group-text">레벨</span>
                             </div>
+                            {
+                                (!isValidLevel(level)) ? <div className="form-warn">레벨 입력이 올바르지 않거나 범위를 벗어났습니다.</div> : <></>
+                            }
+
                         </td>
                     </tr>
                     <tr>
@@ -52,6 +59,9 @@ function Setting() {
                                     onChange={(e) => setFrom(e.target.value)}
                                 />
                                 <span className="input-group-text">성</span>
+                                {
+                                    !isValidStart(level, from) ? <div className="form-warn">올바른 입력이 아닙니다.</div> : <></>
+                                }
                             </div>
                         </td>
                         <td>
@@ -60,6 +70,9 @@ function Setting() {
                                     onChange={(e) => setTo(e.target.value)}
                                 />
                                 <span className="input-group-text">성</span>
+                                {
+                                    !isValidGoal(level, from, to) ? <div className="form-warn">올바른 입력이 아닙니다.</div> : <></>
+                                }
                             </div>
                         </td>
                     </tr>
@@ -71,6 +84,10 @@ function Setting() {
                                     onChange={(e) => setRestoreCost(e.target.value)} />
                                 <span className="input-group-text">메소</span>
                             </div>
+                            {
+                                isValidRestoreCost(restoreCost) ? <div className="restore-cost-show">입력: {Number(restoreCost).toLocaleString()}메소</div>
+                                    : <div className="form-warn restore-cost-show">복구 비용 입력이 올바르지 않습니다.</div>
+                            }
                             <div className="explain">0메소로 입력 시 파괴된 장비의 개수로 결과가 안내됩니다.</div>
                         </td>
                     </tr>
