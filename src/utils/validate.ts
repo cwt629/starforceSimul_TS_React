@@ -1,7 +1,6 @@
 import { getMaximumStarByLevel } from "./reinforce";
 
 const MAXIMUM_LEVEL: number = 300; // 현기준 최대 레벨
-const MAXIMUM_STAR: number = 25; // 현기준 최대 강화 단계
 
 /**
  * level 입력이 올바른 입력인지 판단하여 반환하는 함수

@@ -3,6 +3,7 @@ import { InitialData } from "../type/state";
 import { Dispatcher, init } from "../store/store";
 import { useDispatch } from "react-redux";
 import { isValidGoal, isValidLevel, isValidRestoreCost, isValidStart } from "../utils/validate";
+import { alertWithSwal } from "../utils/alert";
 
 
 function Setting() {
@@ -17,7 +18,41 @@ function Setting() {
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // validation에 따라 알림창 반환하기
+        if (!isValidLevel(level)) {
+            alertWithSwal({
+                icon: 'error',
+                text: '레벨 입력을 확인해주세요!',
+                buttonClass: 'btn btn-danger'
+            });
+            return;
+        }
 
+        if (!isValidStart(level, from)) {
+            alertWithSwal({
+                icon: 'error',
+                text: '시작 강화 단계를 확인해주세요!',
+                buttonClass: 'btn btn-danger'
+            });
+            return;
+        }
+
+        if (!isValidGoal(level, from, to)) {
+            alertWithSwal({
+                icon: 'error',
+                text: '목표 강화 단계를 확인해주세요!',
+                buttonClass: 'btn btn-danger'
+            });
+            return;
+        }
+
+        if (!isValidRestoreCost(restoreCost)) {
+            alertWithSwal({
+                icon: 'error',
+                text: '장비 복구 비용을 확인해주세요!',
+                buttonClass: 'btn btn-danger'
+            });
+            return;
+        }
 
         const initialSet: InitialData = {
             level: Number(level),
