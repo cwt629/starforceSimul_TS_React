@@ -147,7 +147,7 @@ function Setting() {
                     </tr>
                 </tbody>
             </table>
-            <button type="submit" className="btn btn-success">시작</button>
+            <button type="submit" className="btn btn-success">{ready ? "시뮬레이션 재시작" : "시뮬레이션 시작"}</button>
         </form>
     )
 }
