@@ -16,6 +16,9 @@ function Setting() {
     // form 제출 이벤트
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        // validation에 따라 알림창 반환하기
+
+
         const initialSet: InitialData = {
             level: Number(level),
             start: Number(from),
@@ -42,7 +45,8 @@ function Setting() {
                                 <span className="input-group-text">레벨</span>
                             </div>
                             {
-                                (!isValidLevel(level)) ? <div className="form-warn">레벨 입력이 올바르지 않거나 범위를 벗어났습니다.</div> : <></>
+                                (level.length > 0 && !isValidLevel(level)) ?
+                                    <div className="form-warn">레벨 입력이 올바르지 않거나 범위를 벗어났습니다.</div> : <></>
                             }
 
                         </td>
@@ -60,7 +64,8 @@ function Setting() {
                                 />
                                 <span className="input-group-text">성</span>
                                 {
-                                    !isValidStart(level, from) ? <div className="form-warn">올바른 입력이 아닙니다.</div> : <></>
+                                    from.length > 0 && !isValidStart(level, from) ?
+                                        <div className="form-warn">올바른 입력이 아닙니다.</div> : <></>
                                 }
                             </div>
                         </td>
@@ -71,7 +76,8 @@ function Setting() {
                                 />
                                 <span className="input-group-text">성</span>
                                 {
-                                    !isValidGoal(level, from, to) ? <div className="form-warn">올바른 입력이 아닙니다.</div> : <></>
+                                    to.length > 0 && !isValidGoal(level, from, to) ?
+                                        <div className="form-warn">올바른 입력이 아닙니다.</div> : <></>
                                 }
                             </div>
                         </td>

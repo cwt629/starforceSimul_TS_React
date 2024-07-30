@@ -27,7 +27,7 @@ export function isValidLevel(level: string): boolean {
  * @returns 올바른 입력인지 여부
  */
 export function isValidStart(level: string, start: string): boolean {
-    if (start === "") return true; // 입력이 없는 경우
+    if (start === "") return false; // 입력이 없는 경우
 
     if (!isValidLevel(level) || level === "") return false;
     let levelNumber: number = Number(level);
@@ -50,7 +50,7 @@ export function isValidStart(level: string, start: string): boolean {
  * @returns 올바른 입력인지 여부
  */
 export function isValidGoal(level: string, start: string, goal: string): boolean {
-    if (goal === "") return true; // 입력이 없는 경우
+    if (goal === "") return false; // 입력이 없는 경우
 
     if (!isValidLevel(level) || level === "") return false;
     let levelNumber: number = Number(level);
