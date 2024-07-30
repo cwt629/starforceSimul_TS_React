@@ -9,6 +9,11 @@
   margin: 10px auto;
 }
 
+button.mg-10 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 /* Setting 컴포넌트 */
 div.explain {
   color: #888;

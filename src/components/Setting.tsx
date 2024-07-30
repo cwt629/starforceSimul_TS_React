@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { InitialData } from "../type/state";
-import { Dispatcher, init } from "../store/store";
-import { useDispatch } from "react-redux";
+import { Dispatcher, init, RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
 import { isValidGoal, isValidLevel, isValidRestoreCost, isValidStart } from "../utils/validate";
-import { alertWithSwal } from "../utils/alert";
+import { alertWithSwal, confirmWithSwal } from "../utils/alert";
 
 
 function Setting() {
@@ -12,10 +12,11 @@ function Setting() {
     const [to, setTo] = useState("");
     const [restoreCost, setRestoreCost] = useState("0");
 
+    const ready: boolean = useSelector((state: RootState) => (state.ready));
     const dispatch: Dispatcher = useDispatch();
 
     // form 제출 이벤트
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // validation에 따라 알림창 반환하기
         if (!isValidLevel(level)) {
@@ -52,6 +53,18 @@ function Setting() {
                 buttonClass: 'btn btn-danger'
             });
             return;
+        }
+
+        // 이미 강화가 진행되었다가 다시 시작하는 경우 확인
+        if (ready) {
+            const result = await confirmWithSwal({
+                icon: 'warning',
+                text: '현재 진행 중인 강화를 초기화하고 다시 강화를 시작하시겠습니까?',
+                buttonClass: 'btn btn-primary mg-10',
+                buttonClass2: 'btn btn-secondary mg-10'
+            });
+            if (!result.isConfirmed)
+                return;
         }
 
         const initialSet: InitialData = {
