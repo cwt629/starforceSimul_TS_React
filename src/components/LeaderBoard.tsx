@@ -53,7 +53,7 @@ function LeaderBoard() {
                     <tbody>
                         <tr>
                             <td colSpan={3}>
-                                <div>
+                                <div className="result-board">
                                     {recentResult === Result.success ? "강화 성공!"
                                         : recentResult === Result.failure ? "강화 실패"
                                             : recentResult === Result.destroy ? "장비 파괴..."
@@ -64,10 +64,14 @@ function LeaderBoard() {
                         <tr>
                             <td>성공</td><td>실패</td><td>파괴</td>
                         </tr>
-                        <tr>
-                            <td>{totalSuccess.toLocaleString()}</td>
-                            <td>{totalFailure.toLocaleString()}</td>
-                            <td>{totalDestroy.toLocaleString()}</td>
+                        <tr className={
+                            recentResult === Result.success ? "success"
+                                : recentResult === Result.failure ? "failure"
+                                    : recentResult === Result.destroy ? "destroy" : ""
+                        }>
+                            <td className="success-count">{totalSuccess.toLocaleString()}</td>
+                            <td className="failure-count">{totalFailure.toLocaleString()}</td>
+                            <td className="destroy-count">{totalDestroy.toLocaleString()}</td>
                         </tr>
                         <tr>
                             <td colSpan={3}>
