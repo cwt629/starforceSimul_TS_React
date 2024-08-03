@@ -83,7 +83,7 @@ const simulSlice = createSlice({
             }
 
             // 파괴방지로 들어가는 penalty
-            let preventPenalty = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
             state.cost = state.originalCost * preventPenalty;
 
             // 목표 달성 시
@@ -120,7 +120,7 @@ const simulSlice = createSlice({
             }
 
             // 파괴방지로 들어가는 penalty
-            let preventPenalty = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
             state.cost = state.originalCost * preventPenalty;
         },
         // 파괴 처리
@@ -132,8 +132,9 @@ const simulSlice = createSlice({
             state.currentStar = STAR_WHEN_DESTROYED;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
             // 파괴방지로 들어가는 penalty
-            let preventPenalty = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            state.cost = state.originalCost * preventPenalty; state.successPercent = reinforceData.percentage[state.currentStar].success;
+            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            state.cost = state.originalCost * preventPenalty;
+            state.successPercent = reinforceData.percentage[state.currentStar].success;
             state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
             state.failurePercent = 100 - state.successPercent - state.destroyPercent;
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
@@ -146,7 +147,7 @@ const simulSlice = createSlice({
         setPreventDestroy: (state, action: PayloadAction<boolean>) => {
             state.preventDestroy = action.payload;
             // 파괴방지로 들어가는 penalty
-            let preventPenalty = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
             state.cost = state.originalCost * preventPenalty;
         }
     }
