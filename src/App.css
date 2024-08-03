@@ -42,12 +42,19 @@ div.star-div {
   justify-content: center;
   flex-wrap: wrap;
   width: 280px;
+  margin-bottom: 30px;
 }
 
-span.star {
+span.stars {
   text-align: center;
   width: 80px;
+  height: 24px;
   margin: 0 5px;
+}
+
+img.star {
+  width: 16px;
+  height: 16px;
 }
 
 /* Simulator 컴포넌트 */
