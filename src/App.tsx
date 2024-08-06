@@ -1,15 +1,14 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import LeaderBoard from './components/LeaderBoard';
-import Setting from './components/Setting';
-import Title from './components/Title';
+import RouterMain from './routers/RouterMain';
+import RouterLog from './routers/RouterLog';
 
 function App() {
   return (
-    <div className="App">
-      <Title />
-      <Setting />
-      <LeaderBoard />
-    </div>
+    <Routes>
+      <Route path='/' element={<RouterMain />} />
+      <Route path='/log' element={<RouterLog />} />
+    </Routes>
   );
 }
 
