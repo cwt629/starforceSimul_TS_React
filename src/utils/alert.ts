@@ -12,7 +12,7 @@ interface alertOptions {
 }
 
 export async function alertWithSwal({ icon, text, buttonClass }: alertOptions) {
-    await ReactSwal.fire({
+    const result = await ReactSwal.fire({
         icon: icon,
         html: text.replaceAll('\n', '<br/>'), // \n이 제대로 띄어쓰기 처리되도록 처리
         confirmButtonText: '확인',
@@ -21,7 +21,7 @@ export async function alertWithSwal({ icon, text, buttonClass }: alertOptions) {
         },
         buttonsStyling: false // sweetalert2 기본 스타일 비활성화
     });
-    return;
+    return result;
 }
 
 export async function confirmWithSwal({ icon, text, buttonClass, buttonClass2 }: alertOptions) {

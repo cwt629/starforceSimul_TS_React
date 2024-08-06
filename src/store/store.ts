@@ -5,6 +5,8 @@ import { getUpgradeCost } from "../utils/cost";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
 import { alertWithSwal } from "../utils/alert";
+import { saveLogOnStorage } from "../utils/storage";
+import { UserLog } from "../type/storage";
 
 const reinforceData = require("../data/reinforce-data.json");
 const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
@@ -91,7 +93,26 @@ const simulSlice = createSlice({
                 alertWithSwal({
                     icon: 'success', text: `목표 단계인 ${state.goal}성에 도달했습니다!\n총 소비: ${state.totalSpent.toLocaleString()}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy.toLocaleString() + "개" : ""}`,
                     buttonClass: 'btn btn-success'
-                })
+                });
+                let newLog: UserLog = {
+                    title: '테스트 중',
+                    date: new Date(),
+                    log: state.log,
+                    setting: {
+                        level: state.level,
+                        start: state.start,
+                        goal: state.goal,
+                        restoreCost: state.restoreCost
+                    },
+                    total: {
+                        success: state.totalSuccess,
+                        failure: state.totalFailure,
+                        destroy: state.totalDestroy,
+                        cost: state.totalSpent
+                    }
+                };
+                saveLogOnStorage(newLog);
+
                 state.achieved = true;
             }
         },
