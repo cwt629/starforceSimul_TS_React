@@ -1,0 +1,15 @@
+div.log-list>div {
+    width: 100%;
+}
+
+div.log-list * {
+    margin: 0 auto;
+}
+
+ul.log-detail {
+    margin: 10px auto;
+}
+
+ul.log-detail>li {
+    padding: 10px 20px;
+}

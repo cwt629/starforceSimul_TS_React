@@ -1,12 +1,14 @@
 import BreadCrumb from "../components/BreadCrumb";
+import Log from "../components/log/Log";
 import Title from "../components/Title";
+import '../styles/Log.css';
 
 function RouterLog() {
     return (
         <div className="App">
             <Title />
             <BreadCrumb />
-            <div>여기는 로그 자리입니다.</div>
+            <Log />
         </div>
     )
 }
