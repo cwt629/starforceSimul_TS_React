@@ -13,4 +13,10 @@ ul.log-detail {
 
 ul.log-detail>li {
     padding: 10px 20px;
+    width: 100%;
+}
+
+ul.log-detail>button.shrinker {
+    margin-top: 10px;
+    margin-bottom: -20px;
 }

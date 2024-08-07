@@ -14,12 +14,14 @@ function Log() {
                             className="list-group-item list-group-item-action reinforce-log">
                             <div>{data.title}</div>
                             <div>{getFormattedDate(data.date.toLocaleString())}</div>
+                            <div>목표: {data.setting.start}&nbsp;{">"}&nbsp;{data.setting.goal}</div>
                             <div>강화 횟수 총 <span>{data.total.success + data.total.failure + data.total.destroy}</span>회</div>
                             <div><span className="success-count">{data.total.success}</span>회 성공,&nbsp;
                                 <span className="failure-count">{data.total.failure}</span>회 실패,&nbsp;
                                 <span className="destroy-count">{data.total.destroy}</span>회 파괴
                             </div>
                             <div>총 {BigInt(data.total.cost).toLocaleString()}메소 소모</div>
+                            <div>(장비 복구 비용 설정: {BigInt(data.setting.restoreCost).toLocaleString()}메소)</div>
                         </a>
                         <ul className="list-group collapse log-detail" id={`log${index}`}>
                             {data.log.map((d, i) => (
@@ -30,9 +32,11 @@ function Log() {
                                                 : d.result === Result.destroy ? <span className="badge bg-dark">파괴</span>
                                                     : <span className="badge bg-info">??</span>
                                     }
+                                    &nbsp;&nbsp;
                                     {d.from}성 {">"} {d.to}성
                                 </li>
                             ))}
+                            <button className="btn btn-outline-secondary btn-sm shrinker" data-bs-target={`#log${index}`} data-bs-toggle="collapse">접기 ▲</button>
                         </ul>
                     </div>
                 ))
