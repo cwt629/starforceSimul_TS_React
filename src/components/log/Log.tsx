@@ -19,7 +19,7 @@ function Log() {
                                 <span className="failure-count">{data.total.failure}</span>회 실패,&nbsp;
                                 <span className="destroy-count">{data.total.destroy}</span>회 파괴
                             </div>
-                            <div>총 {data.total.cost.toLocaleString()}메소 소모</div>
+                            <div>총 {BigInt(data.total.cost).toLocaleString()}메소 소모</div>
                         </a>
                         <ul className="list-group collapse log-detail" id={`log${index}`}>
                             {data.log.map((d, i) => (
