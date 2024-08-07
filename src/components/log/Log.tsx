@@ -1,5 +1,6 @@
 import { Result } from "../../type/result";
 import { UserLog } from "../../type/storage";
+import { getFormattedDate } from "../../utils/dateformat";
 import { getLogInStorage } from "../../utils/storage";
 
 function Log() {
@@ -12,7 +13,7 @@ function Log() {
                         <a key={index} href={`#log${index}`} data-bs-toggle="collapse"
                             className="list-group-item list-group-item-action reinforce-log">
                             <div>{data.title}</div>
-                            <div>{new Date(data.date).toDateString()}</div>
+                            <div>{getFormattedDate(data.date.toLocaleString())}</div>
                             <div>강화 횟수 총 <span>{data.total.success + data.total.failure + data.total.destroy}</span>회</div>
                             <div><span className="success-count">{data.total.success}</span>회 성공,&nbsp;
                                 <span className="failure-count">{data.total.failure}</span>회 실패,&nbsp;

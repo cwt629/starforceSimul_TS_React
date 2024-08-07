@@ -1,5 +1,6 @@
 div.log-list>div {
     width: 100%;
+    padding: 20px;
 }
 
 div.log-list * {
