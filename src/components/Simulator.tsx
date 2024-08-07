@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, setPreventDestroy, setStarcatch } from "../store/store";
+import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, saveResult, setPreventDestroy, setStarcatch } from "../store/store";
 import { Result, ResultExpectation } from "../type/result";
 import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
-import React from "react";
+import React, { useEffect } from "react";
 import { alertWithSwal } from "../utils/alert";
+import { UserLog } from "../type/storage";
+import { LogData } from "../type/state";
+import { finishAndGetTitle } from "../utils/storage";
 
 function Simulator() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
@@ -13,7 +16,50 @@ function Simulator() {
     const destroyPercent: number = useSelector((state: RootState) => (state.destroyPercent));
     const noStarcatch: boolean = useSelector((state: RootState) => (state.noStarcatch));
     const preventDestroy: boolean = useSelector((state: RootState) => (state.preventDestroy));
+    const achieved: boolean = useSelector((state: RootState) => (state.achieved));
+    const log: LogData[] = useSelector((state: RootState) => (state.log));
+    const level: number = useSelector((state: RootState) => (state.level));
+    const start: number = useSelector((state: RootState) => (state.start));
+    const goal: number = useSelector((state: RootState) => (state.goal));
+    const restoreCost: bigint = useSelector((state: RootState) => (state.restoreCost));
+    const totalSuccess: number = useSelector((state: RootState) => (state.totalSuccess));
+    const totalFailure: number = useSelector((state: RootState) => (state.totalFailure));
+    const totalDestroy: number = useSelector((state: RootState) => (state.totalDestroy));
+    const totalSpent: bigint = useSelector((state: RootState) => (state.totalSpent));
+    const autoSaved: boolean = useSelector((state: RootState) => (state.autoSaved));
     const dispatch: Dispatcher = useDispatch();
+
+    useEffect(() => {
+        if (achieved && !autoSaved) {
+            let currentLog: UserLog = {
+                title: '',
+                date: new Date(),
+                log: log,
+                setting: {
+                    level: level,
+                    start: start,
+                    goal: goal,
+                    restoreCost: restoreCost
+                },
+                total: {
+                    success: totalSuccess,
+                    failure: totalFailure,
+                    destroy: totalDestroy,
+                    cost: totalSpent
+                }
+            };
+
+            finishAndGetTitle(currentLog)
+                .then((title: string) => {
+                    dispatch(saveResult(title));
+                    alertWithSwal({
+                        icon: 'success',
+                        text: '강화 내역이 저장되었습니다!\n나의 강화 기록 탭에서 확인하실 수 있습니다.',
+                        buttonClass: 'btn btn-success'
+                    });
+                })
+        }
+    }, [achieved])
 
     // 스타캐치 해제 체크박스 클릭 이벤트
     const handleStarCatch = (event: React.ChangeEvent<HTMLInputElement>) => {

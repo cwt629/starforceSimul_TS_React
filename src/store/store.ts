@@ -4,7 +4,6 @@ import { getMaximumStarByLevel, isPreventableStar } from "../utils/reinforce";
 import { getUpgradeCost } from "../utils/cost";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
-import { alertWithSwal } from "../utils/alert";
 import { saveLogOnStorage } from "../utils/storage";
 import { UserLog } from "../type/storage";
 
@@ -32,7 +31,8 @@ const initialState: CurrentState = {
     preventDestroy: false,
     log: [],
     achieved: false,
-    ableToFall: false
+    ableToFall: false,
+    autoSaved: false
 };
 
 const simulSlice = createSlice({
@@ -65,6 +65,7 @@ const simulSlice = createSlice({
             state.preventDestroy = false;
             state.log = [];
             state.achieved = false;
+            state.autoSaved = false;
         },
         // 성공 처리
         grantSuccess: (state) => {
@@ -90,29 +91,6 @@ const simulSlice = createSlice({
 
             // 목표 달성 시
             if (!state.achieved && state.currentStar === state.goal) {
-                alertWithSwal({
-                    icon: 'success', text: `목표 단계인 ${state.goal}성에 도달했습니다!\n총 소비: ${state.totalSpent.toLocaleString()}메소${state.totalDestroy > 0 && state.restoreCost === BigInt(0) ? " + 장비 " + state.totalDestroy.toLocaleString() + "개" : ""}`,
-                    buttonClass: 'btn btn-success'
-                });
-                let newLog: UserLog = {
-                    title: '테스트 중',
-                    date: new Date(),
-                    log: state.log,
-                    setting: {
-                        level: state.level,
-                        start: state.start,
-                        goal: state.goal,
-                        restoreCost: state.restoreCost
-                    },
-                    total: {
-                        success: state.totalSuccess,
-                        failure: state.totalFailure,
-                        destroy: state.totalDestroy,
-                        cost: state.totalSpent
-                    }
-                };
-                saveLogOnStorage(newLog);
-
                 state.achieved = true;
             }
         },
@@ -170,11 +148,33 @@ const simulSlice = createSlice({
             // 파괴방지로 들어가는 penalty
             let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
             state.cost = state.originalCost * preventPenalty;
+        },
+        // 현재 강화 데이터 저장
+        saveResult: (state, action: PayloadAction<string>) => {
+            let userLog: UserLog = {
+                title: action.payload,
+                date: new Date(),
+                log: state.log,
+                setting: {
+                    level: state.level,
+                    start: state.start,
+                    goal: state.goal,
+                    restoreCost: state.restoreCost
+                },
+                total: {
+                    success: state.totalSuccess,
+                    failure: state.totalFailure,
+                    destroy: state.totalDestroy,
+                    cost: state.totalSpent
+                }
+            };
+            saveLogOnStorage(userLog);
+            state.autoSaved = true;
         }
     }
 });
 
-export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy } = simulSlice.actions;
+export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult } = simulSlice.actions;
 
 export const store = configureStore({
     reducer: simulSlice.reducer,
