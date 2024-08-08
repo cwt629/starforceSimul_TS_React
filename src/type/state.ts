@@ -36,5 +36,5 @@ export interface CurrentState {
     log: LogData[],
     achieved: boolean,
     ableToFall: boolean,
-    autoSaved: boolean // 자동 저장이 되었는지 여부
+    autoSaved: boolean, // 자동 저장이 되었는지 여부
 };

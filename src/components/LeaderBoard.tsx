@@ -28,7 +28,7 @@ function LeaderBoard() {
 
     return (
         ready ?
-            (<div>
+            (<div id="leaderboard">
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
@@ -103,7 +103,7 @@ function LeaderBoard() {
                 </table>
 
 
-            </div>) : (<></>)
+            </div>) : (<div id="leaderboard"></div>)
     )
 }
 

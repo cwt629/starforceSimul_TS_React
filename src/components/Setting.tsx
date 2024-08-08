@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InitialData } from "../type/state";
 import { Dispatcher, init, RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { isValidGoal, isValidLevel, isValidRestoreCost, isValidStart } from "../utils/validate";
-import { alertWithSwal, confirmWithSwal } from "../utils/alert";
+import { alertWithSwal, confirmRestartSimulation } from "../utils/alert";
+import { autoScrollByID } from "../utils/autoscroll";
 
 
 function Setting() {
@@ -57,14 +58,8 @@ function Setting() {
 
         // 이미 강화가 진행되었다가 다시 시작하는 경우 확인
         if (ready) {
-            const result = await confirmWithSwal({
-                icon: 'warning',
-                text: '현재 진행 중인 강화를 초기화하고 다시 강화를 시작하시겠습니까?',
-                buttonClass: 'btn btn-primary mg-10',
-                buttonClass2: 'btn btn-secondary mg-10'
-            });
-            if (!result.isConfirmed)
-                return;
+            let confirmed: boolean = await confirmRestartSimulation(); // 재시작하는지 여부
+            if (!confirmed) return;
         }
 
         const initialSet: InitialData = {
@@ -76,6 +71,13 @@ function Setting() {
 
         dispatch(init(initialSet));
     }
+
+    // 자동 스크롤을 위한 useEffect
+    useEffect(() => {
+        // ready될 때마다 오토스크롤
+        if (ready)
+            autoScrollByID("leaderboard");
+    }, [ready]);
 
     return (
         <form className="setting" onSubmit={(e) => handleFormSubmit(e)}>
