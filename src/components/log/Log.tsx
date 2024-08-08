@@ -2,6 +2,9 @@ import { Result } from "../../type/result";
 import { UserLog } from "../../type/storage";
 import { getFormattedDate } from "../../utils/dateformat";
 import { getLogInStorage } from "../../utils/storage";
+import DestroyBadge from "./badges/DestroyBadge";
+import FailureBadge from "./badges/FailureBadge";
+import SuccessBadge from "./badges/SuccessBadge";
 
 function Log() {
     const storageLog: UserLog[] = getLogInStorage();
@@ -25,9 +28,9 @@ function Log() {
                                     <tr>
                                         <td colSpan={3}>
                                             총 강화 횟수 {data.total.success + data.total.failure + data.total.destroy}회<br />
-                                            <span className="badge bg-success">성공</span>&nbsp;{data.total.success}&nbsp;
-                                            <span className="badge bg-danger">실패</span>&nbsp;{data.total.failure}&nbsp;
-                                            <span className="badge bg-dark">파괴</span>&nbsp;{data.total.destroy}&nbsp;
+                                            <SuccessBadge />&nbsp;{data.total.success}&nbsp;
+                                            <FailureBadge />&nbsp;{data.total.failure}&nbsp;
+                                            <DestroyBadge />&nbsp;{data.total.destroy}&nbsp;
                                         </td>
                                     </tr>
                                     <tr>
@@ -43,9 +46,9 @@ function Log() {
                             {data.log.map((d, i) => (
                                 <li key={i} className="list-group-item">
                                     {
-                                        d.result === Result.success ? <span className="badge bg-success">성공</span>
-                                            : d.result === Result.failure ? <span className="badge bg-danger">실패</span>
-                                                : d.result === Result.destroy ? <span className="badge bg-dark">파괴</span>
+                                        d.result === Result.success ? <SuccessBadge />
+                                            : d.result === Result.failure ? <FailureBadge />
+                                                : d.result === Result.destroy ? <DestroyBadge />
                                                     : <span className="badge bg-info">??</span>
                                     }
                                     &nbsp;&nbsp;
