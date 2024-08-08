@@ -65,21 +65,33 @@ function Log() {
                                 </tbody>
                             </table>
                         </a>
-                        <ul className="list-group collapse log-detail" id={`log${index}`}>
-                            {data.log.map((d, i) => (
-                                <li key={i} className="list-group-item">
-                                    {
-                                        d.result === Result.success ? <SuccessBadge />
-                                            : d.result === Result.failure ? <FailureBadge />
-                                                : d.result === Result.destroy ? <DestroyBadge />
-                                                    : <span className="badge bg-info">??</span>
-                                    }
-                                    &nbsp;&nbsp;
-                                    {d.from}성 {">"} {d.to}성
-                                </li>
-                            ))}
+                        <div className="collapse log-detail-div" id={`log${index}`}>
+                            <ul className="list-group log-detail" >
+                                {data.log.map((d, i) => (
+                                    <li key={i} className="list-group-item">
+                                        <table className="log-result-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td width={40}><b>{i + 1}</b></td>
+                                                    <td>
+                                                        {
+                                                            d.result === Result.success ? <SuccessBadge />
+                                                                : d.result === Result.failure ? <FailureBadge />
+                                                                    : d.result === Result.destroy ? <DestroyBadge />
+                                                                        : <span className="badge bg-info">??</span>
+                                                        }
+                                                        &nbsp;&nbsp;
+                                                        {d.from}성 {">"} {d.to}성
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </li>
+                                ))}
+                            </ul>
                             <button className="btn btn-outline-secondary btn-sm shrinker" data-bs-target={`#log${index}`} data-bs-toggle="collapse">접기 ▲</button>
-                        </ul>
+                        </div>
                     </div>
                 ))
                 : <div>저장된 데이터가 없습니다.</div>

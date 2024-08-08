@@ -7,12 +7,22 @@ div.log-list * {
     margin: 0 auto;
 }
 
+div.log-detail-div {
+    width: 80%;
+}
+
 ul.log-detail {
     margin: 10px auto;
+    max-height: 490px;
+    overflow-y: auto;
 }
 
 ul.log-detail>li {
     padding: 10px 20px;
+    width: 100%;
+}
+
+ul.log-detail table.log-result-table {
     width: 100%;
 }
 
