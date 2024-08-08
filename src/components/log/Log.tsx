@@ -1,13 +1,31 @@
+import { useState } from "react";
 import { Result } from "../../type/result";
-import { UserLog } from "../../type/storage";
+import { confirmWithSwal } from "../../utils/alert";
 import { getFormattedDate } from "../../utils/dateformat";
-import { getLogInStorage } from "../../utils/storage";
+import { deleteLogInStorage, getLogInStorage } from "../../utils/storage";
 import DestroyBadge from "./badges/DestroyBadge";
 import FailureBadge from "./badges/FailureBadge";
 import SuccessBadge from "./badges/SuccessBadge";
 
 function Log() {
-    const storageLog: UserLog[] = getLogInStorage();
+    const [storageLog, setStorageLog] = useState(getLogInStorage());
+
+    // 삭제 버튼 클릭 이벤트
+    const handleDeleteClick = (index: number, title: string) => {
+        confirmWithSwal({
+            icon: 'warning',
+            text: `삭제된 데이터는 복구할 수 없습니다.\n정말 해당 로그를 삭제하시겠습니까?\n제목: ${title}`,
+            buttonClass: 'btn btn-danger mg-10',
+            buttonClass2: 'btn btn-secondary mg-10'
+        }).then((res) => {
+            if (res.isConfirmed) {
+                deleteLogInStorage(index);
+                // 갱신해주기
+                setStorageLog(getLogInStorage());
+            }
+        })
+    }
+
     return (
         <div className="list-group log-list">
             {storageLog.length > 0 ?
@@ -19,7 +37,12 @@ function Log() {
                                 <tbody>
                                     <tr>
                                         <td colSpan={2}><b>{data.title}</b></td>
-                                        <td>삭제하기</td>
+                                        <td>
+                                            <button className="btn btn-sm btn-outline-danger"
+                                                onClick={() => handleDeleteClick(index, data.title)}>
+                                                <i className="bi bi-trash3">삭제</i>
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colSpan={2}>{getFormattedDate(data.date.toLocaleString())}</td>

@@ -24,6 +24,15 @@ export function getLogInStorage(): UserLog[] {
     return JSON.parse(originalLogString, bigintReviver);
 }
 
+export function deleteLogInStorage(index: number): void {
+    let originalLogString: string | null = localStorage.getItem(DATA_NAME_IN_LOCAL_STORAGE);
+    if (!originalLogString) return;
+
+    let originalLog: UserLog[] = JSON.parse(originalLogString, bigintReviver);
+    // 해당 인덱스를 제외한다
+    localStorage.setItem(DATA_NAME_IN_LOCAL_STORAGE, JSON.stringify([...originalLog.slice(0, index), ...originalLog.slice(index + 1)]));
+}
+
 export async function finishAndGetTitle(userLog: UserLog): Promise<string> {
     await alertWithSwal({
         icon: 'success',
