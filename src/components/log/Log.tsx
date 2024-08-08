@@ -9,8 +9,8 @@ function Log() {
         <div className="list-group log-list">
             {storageLog.length > 0 ?
                 storageLog.map((data, index) => (
-                    <div>
-                        <a key={index} href={`#log${index}`} data-bs-toggle="collapse"
+                    <div key={index} >
+                        <a href={`#log${index}`} data-bs-toggle="collapse"
                             className="list-group-item list-group-item-action reinforce-log">
                             <table className="table table-bordered log-card">
                                 <tbody>
