@@ -12,16 +12,32 @@ function Log() {
                     <div>
                         <a key={index} href={`#log${index}`} data-bs-toggle="collapse"
                             className="list-group-item list-group-item-action reinforce-log">
-                            <div>{data.title}</div>
-                            <div>{getFormattedDate(data.date.toLocaleString())}</div>
-                            <div>목표: {data.setting.start}&nbsp;{">"}&nbsp;{data.setting.goal}</div>
-                            <div>강화 횟수 총 <span>{data.total.success + data.total.failure + data.total.destroy}</span>회</div>
-                            <div><span className="success-count">{data.total.success}</span>회 성공,&nbsp;
-                                <span className="failure-count">{data.total.failure}</span>회 실패,&nbsp;
-                                <span className="destroy-count">{data.total.destroy}</span>회 파괴
-                            </div>
-                            <div>총 {BigInt(data.total.cost).toLocaleString()}메소 소모</div>
-                            <div>(장비 복구 비용 설정: {BigInt(data.setting.restoreCost).toLocaleString()}메소)</div>
+                            <table className="table table-bordered log-card">
+                                <tbody>
+                                    <tr>
+                                        <td colSpan={2}><b>{data.title}</b></td>
+                                        <td>삭제하기</td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={2}>{getFormattedDate(data.date.toLocaleString())}</td>
+                                        <td>목표: {data.setting.start}&nbsp;{">"}&nbsp;{data.setting.goal}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={3}>
+                                            총 강화 횟수 {data.total.success + data.total.failure + data.total.destroy}회<br />
+                                            <span className="badge bg-success">성공</span>&nbsp;{data.total.success}&nbsp;
+                                            <span className="badge bg-danger">실패</span>&nbsp;{data.total.failure}&nbsp;
+                                            <span className="badge bg-dark">파괴</span>&nbsp;{data.total.destroy}&nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colSpan={3}>
+                                            총 {BigInt(data.total.cost).toLocaleString()}메소 소모<br />
+                                            (복구 비용 설정: {BigInt(data.setting.restoreCost).toLocaleString()}메소)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </a>
                         <ul className="list-group collapse log-detail" id={`log${index}`}>
                             {data.log.map((d, i) => (
