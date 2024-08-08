@@ -20,3 +20,9 @@ ul.log-detail>button.shrinker {
     margin-top: 10px;
     margin-bottom: -20px;
 }
+
+/* badge들 */
+span.badge.result-badge {
+    position: relative;
+    top: -1.5px;
+}
