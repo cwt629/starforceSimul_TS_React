@@ -1,3 +1,7 @@
+ul.log-notice-list {
+    text-align: left;
+}
+
 div.log-list>div {
     width: 100%;
     padding: 20px;
