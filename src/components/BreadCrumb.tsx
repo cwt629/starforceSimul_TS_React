@@ -1,12 +1,12 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useHistory, useLocation, } from "react-router-dom";
 
 function BreadCrumb() {
     const { pathname } = useLocation();
-    const nav = useNavigate();
+    const history = useHistory();
 
     // 특정 tab을 눌렀을 때, 해당 링크로 이동하게 하는 이벤트
     const handleClickTab = (link: string) => {
-        nav(link);
+        history.push(link);
     }
 
     return (
