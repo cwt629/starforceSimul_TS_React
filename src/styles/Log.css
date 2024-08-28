@@ -1,3 +1,7 @@
+.App {
+    overflow-x: hidden;
+}
+
 ul.log-notice-list {
     text-align: left;
 }
@@ -9,6 +13,10 @@ div.log-list>div {
 
 div.log-list * {
     margin: 0 auto;
+}
+
+div.log-item {
+    position: relative;
 }
 
 div.log-detail-div {
@@ -33,6 +41,15 @@ ul.log-detail table.log-result-table {
 ul.log-detail>button.shrinker {
     margin-top: 10px;
     margin-bottom: -20px;
+}
+
+i.log-delbtn {
+    position: absolute;
+    top: -10px;
+    right: -3px;
+    color: red;
+    font-size: 28px;
+    cursor: pointer;
 }
 
 /* badge들 */

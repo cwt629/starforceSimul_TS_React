@@ -30,19 +30,13 @@ function Log() {
         <div className="list-group log-list">
             {storageLog.length > 0 ?
                 storageLog.map((data, index) => (
-                    <div key={index} >
+                    <div key={index} className="log-item">
                         <a href={`#log${index}`} data-bs-toggle="collapse"
                             className="list-group-item list-group-item-action reinforce-log">
                             <table className="table table-bordered log-card">
                                 <tbody>
                                     <tr>
-                                        <td colSpan={2}><b>{data.title}</b></td>
-                                        <td>
-                                            <button className="btn btn-sm btn-outline-danger"
-                                                onClick={() => handleDeleteClick(index, data.title)}>
-                                                <i className="bi bi-trash3">삭제</i>
-                                            </button>
-                                        </td>
+                                        <td colSpan={3}><b>{data.title}</b></td>
                                     </tr>
                                     <tr>
                                         <td colSpan={2}>{getFormattedDate(data.date.toLocaleString())}</td>
@@ -92,6 +86,10 @@ function Log() {
                             </ul>
                             <button className="btn btn-outline-secondary btn-sm shrinker" data-bs-target={`#log${index}`} data-bs-toggle="collapse">접기 ▲</button>
                         </div>
+                        <i className="bi bi-x log-delbtn"
+                            onClick={() => handleDeleteClick(index, data.title)}>
+
+                        </i>
                     </div>
                 ))
                 : <div>저장된 데이터가 없습니다.</div>
