@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/starforceSimul_TS_React/static/css/main.56a842ff.css",
-    "main.js": "/starforceSimul_TS_React/static/js/main.fdd2ee86.js",
+    "main.css": "/starforceSimul_TS_React/static/css/main.78e66191.css",
+    "main.js": "/starforceSimul_TS_React/static/js/main.26151e02.js",
     "static/js/453.368e6f8b.chunk.js": "/starforceSimul_TS_React/static/js/453.368e6f8b.chunk.js",
     "index.html": "/starforceSimul_TS_React/index.html",
-    "main.56a842ff.css.map": "/starforceSimul_TS_React/static/css/main.56a842ff.css.map",
-    "main.fdd2ee86.js.map": "/starforceSimul_TS_React/static/js/main.fdd2ee86.js.map",
+    "main.78e66191.css.map": "/starforceSimul_TS_React/static/css/main.78e66191.css.map",
+    "main.26151e02.js.map": "/starforceSimul_TS_React/static/js/main.26151e02.js.map",
     "453.368e6f8b.chunk.js.map": "/starforceSimul_TS_React/static/js/453.368e6f8b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.56a842ff.css",
-    "static/js/main.fdd2ee86.js"
+    "static/css/main.78e66191.css",
+    "static/js/main.26151e02.js"
   ]
 }
