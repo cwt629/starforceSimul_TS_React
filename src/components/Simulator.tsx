@@ -110,20 +110,68 @@ function Simulator() {
 
     return (ready ?
         <div className="simulator">
-            <div className="form-check">
-                <input type="checkbox" className="form-check-input" id="starcatch"
-                    checked={noStarcatch}
-                    onChange={(e) => handleStarCatch(e)} />
-                <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+            <div className="simul-options">
+                <span className="options-category">비용 할인 옵션</span>
+                <div className="discount-options">
+                    <table className="table table-bordered option-table">
+                        <tbody>
+                            <tr>
+                                <td><b>MVP 할인</b></td>
+                                <td>
+                                    <div className="discount-options-mvp">
+                                        <div className="form-check">
+                                            <input type="radio" className="form-check-input" id="nomvp" name="mvp" defaultChecked />
+                                            <label className="form-check-label" htmlFor="nomvp">브론즈</label>
+                                        </div>
+                                        <div className="form-check">
+                                            <input type="radio" className="form-check-input" id="mvpsilver" name="mvp" />
+                                            <label className="form-check-label" htmlFor="mvpsilver">실버</label>
+                                        </div>
+                                        <div className="form-check">
+                                            <input type="radio" className="form-check-input" id="mvpgold" name="mvp" />
+                                            <label className="form-check-label" htmlFor="mvpgold">골드</label>
+                                        </div>
+                                        <div className="form-check">
+                                            <input type="radio" className="form-check-input" id="mvpdiared" name="mvp" />
+                                            <label className="form-check-label" htmlFor="mvpdiared">다이아,레드</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>PC방 할인</b></td>
+                                <td>
+                                    <div className="discount-options-pcroom">
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox" id="pccheck" />
+                                            <label className="form-check-label" htmlFor="pccheck">PC방 혜택 적용</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+
+                </div>
             </div>
-            <div className="form-check">
-                <input type="checkbox" className="form-check-input" id="destroyShield"
-                    checked={preventDestroy}
-                    onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
-                <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
+            <div className="simul-ingame">
+                <div className="form-check">
+                    <input type="checkbox" className="form-check-input" id="starcatch"
+                        checked={noStarcatch}
+                        onChange={(e) => handleStarCatch(e)} />
+                    <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+                </div>
+                <div className="form-check">
+                    <input type="checkbox" className="form-check-input" id="destroyShield"
+                        checked={preventDestroy}
+                        onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
+                    <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
+                </div>
+                <button type="button" className="btn btn-outline-primary"
+                    onClick={handleClick}>강화하기</button>
             </div>
-            <button type="button" className="btn btn-outline-primary"
-                onClick={handleClick}>강화하기</button>
         </div> : <></>
     )
 }

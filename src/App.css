@@ -87,20 +87,51 @@ img.star {
 
 /* Simulator 컴포넌트 */
 div.simulator {
+  /* display: flex;
+  justify-content: center;
+  flex-wrap: wrap; */
+}
+
+div.simulator>div>* {
+  margin: 10px;
+}
+
+div.simul-options {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+div.simul-options .options-category {
+  position: absolute;
+  left: 0;
+  top: -22px;
+  background-color: white;
+}
+
+div.simulator div.discount-options div.discount-options-mvp {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+div.simulator div.discount-options table.option-table * {
+  margin: 0;
+}
+
+div.simulator div.simul-ingame {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-div.simulator>* {
-  margin: 10px;
-}
-
-div.simulator>div.form-check {
+div.simulator div.form-check {
   display: flex;
   align-items: center;
 }
 
-div.simulator>div.form-check>* {
+div.simulator div.form-check>* {
   padding: 0 5px;
 }
