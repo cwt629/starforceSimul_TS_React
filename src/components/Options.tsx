@@ -1,9 +1,17 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatcher, RootState, setMVPRank } from "../store/store";
+import { MVPRank } from "../type/discount";
 
 function Options() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
+    const mvpRank: MVPRank = useSelector((state: RootState) => (state.mvpRank));
 
+    const dispatch: Dispatcher = useDispatch();
+
+    // mvp 할인 적용에 대한 이벤트 핸들러
+    const handleMVPClick = (mvp: MVPRank): void => {
+        dispatch(setMVPRank(mvp));
+    }
 
     return (
         ready ?
@@ -18,19 +26,23 @@ function Options() {
                                     <td>
                                         <div className="discount-options-mvp">
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="nomvp" name="mvp" defaultChecked />
+                                                <input type="radio" className="form-check-input" id="nomvp" name="mvp" checked={mvpRank === MVPRank.bronze}
+                                                    onClick={() => handleMVPClick(MVPRank.bronze)} />
                                                 <label className="form-check-label" htmlFor="nomvp">브론즈</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="mvpsilver" name="mvp" />
+                                                <input type="radio" className="form-check-input" id="mvpsilver" name="mvp" checked={mvpRank === MVPRank.silver}
+                                                    onClick={() => handleMVPClick(MVPRank.silver)} />
                                                 <label className="form-check-label" htmlFor="mvpsilver">실버</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="mvpgold" name="mvp" />
+                                                <input type="radio" className="form-check-input" id="mvpgold" name="mvp" checked={mvpRank === MVPRank.gold}
+                                                    onClick={() => handleMVPClick(MVPRank.gold)} />
                                                 <label className="form-check-label" htmlFor="mvpgold">골드</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="mvpdiared" name="mvp" />
+                                                <input type="radio" className="form-check-input" id="mvpdiared" name="mvp" checked={mvpRank === MVPRank.dia || mvpRank === MVPRank.red}
+                                                    onClick={() => handleMVPClick(MVPRank.dia)} />
                                                 <label className="form-check-label" htmlFor="mvpdiared">다이아,레드</label>
                                             </div>
                                         </div>
