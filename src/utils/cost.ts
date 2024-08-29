@@ -1,3 +1,22 @@
+import { MVPRank } from "../type/discount";
+import { isPreventableStar } from "./reinforce";
+
+interface DataForCost {
+    originalCost: bigint,
+    currentStar: number,
+    destroyPercent: number,
+    preventDestroy: boolean,
+    mvpRank: MVPRank,
+    pcRoomApplied: boolean,
+    eventDC30: boolean
+}
+
+const PC_ROOM_DISCOUNT_RATE = 5; // PC방 할인 혜택
+const BRONZE_DISCOUNT_RATE = 0; // MVP브론즈 할인 혜택
+const SILVER_DISCOUNT_RATE = 3; // MVP실버 할인 혜택
+const GOLD_DISCOUNT_RATE = 5; // MVP골드 할인 혜택
+const DIA_DISCOUNT_RATE = 10; // MVP다이아/레드 할인 혜택
+
 export function getUpgradeCost(level: number, star: number): bigint {
     let cost: number = 0;
     switch (star) {
@@ -56,4 +75,23 @@ export function getUpgradeCost(level: number, star: number): bigint {
     cost = Math.round(cost / 10) * 10;
 
     return BigInt(cost);
+}
+
+export function getActualCost(data: DataForCost): bigint {
+    // 파괴방지에 의해 penalty가 적용되는지 여부
+    let applyPenalty: boolean = isPreventableStar(data.currentStar) && data.destroyPercent > 0 && data.preventDestroy;
+    let penaltyCost: bigint = (applyPenalty) ? data.originalCost : BigInt(0);
+    // mvp 혜택에 의한 할인율 먼저 구해주기
+    let discountRate: number = (data.mvpRank === MVPRank.bronze) ? BRONZE_DISCOUNT_RATE :
+        (data.mvpRank === MVPRank.silver) ? SILVER_DISCOUNT_RATE :
+            (data.mvpRank === MVPRank.gold) ? GOLD_DISCOUNT_RATE : DIA_DISCOUNT_RATE;
+    // 구해진 할인율에 pc방 혜택에 의한 할인율을 더해준다
+    discountRate += (data.pcRoomApplied) ? PC_ROOM_DISCOUNT_RATE : 0;
+    // 30% 할인 이벤트에 의한 할인율
+    let eventDiscountRate: number = (data.eventDC30) ? 30 : 0;
+
+    // 위 할인 혜택에 의거해 비용 계산
+    let actualCost: bigint = data.originalCost * BigInt(100 - discountRate) * BigInt(100 - eventDiscountRate) / BigInt(10000) + penaltyCost;
+
+    return actualCost;
 }

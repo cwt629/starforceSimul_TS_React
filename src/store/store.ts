@@ -1,11 +1,12 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrentState, InitialData } from "../type/state";
 import { getMaximumStarByLevel, isPreventableStar } from "../utils/reinforce";
-import { getUpgradeCost } from "../utils/cost";
+import { getActualCost, getUpgradeCost } from "../utils/cost";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
 import { saveLogOnStorage } from "../utils/storage";
 import { UserLog } from "../type/storage";
+import { MVPRank } from "../type/discount";
 
 const reinforceData = require("../data/reinforce-data.json");
 const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
@@ -32,7 +33,12 @@ const initialState: CurrentState = {
     log: [],
     achieved: false,
     ableToFall: false,
-    autoSaved: false
+    autoSaved: false,
+    mvpRank: MVPRank.bronze,
+    pcRoomApplied: false,
+    bonusUnderTen: false,
+    eventDC30: false,
+    successOnFives: false
 };
 
 const simulSlice = createSlice({
@@ -66,6 +72,11 @@ const simulSlice = createSlice({
             state.log = [];
             state.achieved = false;
             state.autoSaved = false;
+            state.mvpRank = MVPRank.bronze;
+            state.pcRoomApplied = false;
+            state.bonusUnderTen = false;
+            state.eventDC30 = false;
+            state.successOnFives = false;
         },
         // 성공 처리
         grantSuccess: (state) => {
@@ -85,9 +96,18 @@ const simulSlice = createSlice({
                 state.ableToFall = !reinforceData.keeplevel[state.currentStar];
             }
 
-            // 파괴방지로 들어가는 penalty
-            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            state.cost = state.originalCost * preventPenalty;
+            // // 파괴방지로 들어가는 penalty
+            // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            // state.cost = state.originalCost * preventPenalty;
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
 
             // 목표 달성 시
             if (!state.achieved && state.currentStar === state.goal) {
@@ -118,9 +138,18 @@ const simulSlice = createSlice({
                 state.destroyPercent = 0;
             }
 
-            // 파괴방지로 들어가는 penalty
-            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            state.cost = state.originalCost * preventPenalty;
+            // // 파괴방지로 들어가는 penalty
+            // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            // state.cost = state.originalCost * preventPenalty;
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
         },
         // 파괴 처리
         grantDestroy: (state) => {
@@ -130,13 +159,22 @@ const simulSlice = createSlice({
             state.totalDestroy++;
             state.currentStar = STAR_WHEN_DESTROYED;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
-            // 파괴방지로 들어가는 penalty
-            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            state.cost = state.originalCost * preventPenalty;
+            // // 파괴방지로 들어가는 penalty
+            // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
+            // state.cost = state.originalCost * preventPenalty;
             state.successPercent = reinforceData.percentage[state.currentStar].success;
             state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
             state.failurePercent = 100 - state.successPercent - state.destroyPercent;
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
         },
         // 스타캐치 해제 체크 처리
         setStarcatch: (state, action: PayloadAction<boolean>) => {
@@ -145,9 +183,16 @@ const simulSlice = createSlice({
         // 파괴방지 체크 처리
         setPreventDestroy: (state, action: PayloadAction<boolean>) => {
             state.preventDestroy = action.payload;
-            // 파괴방지로 들어가는 penalty
-            let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            state.cost = state.originalCost * preventPenalty;
+
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
         },
         // 현재 강화 데이터 저장
         saveResult: (state, action: PayloadAction<string>) => {
@@ -170,11 +215,24 @@ const simulSlice = createSlice({
             };
             saveLogOnStorage(userLog);
             state.autoSaved = true;
+        },
+        // mvp 체크
+        setMVPRank: (state, action: PayloadAction<MVPRank>) => {
+            state.mvpRank = action.payload;
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
         }
     }
 });
 
-export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult } = simulSlice.actions;
+export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult, setMVPRank } = simulSlice.actions;
 
 export const store = configureStore({
     reducer: simulSlice.reducer,

@@ -1,3 +1,4 @@
+import { MVPRank } from "./discount"
 import { Result } from "./result"
 
 export interface InitialData {
@@ -37,4 +38,9 @@ export interface CurrentState {
     achieved: boolean,
     ableToFall: boolean,
     autoSaved: boolean, // 자동 저장이 되었는지 여부
+    mvpRank: MVPRank, // 옵션에서 체크된 MVP 등급
+    pcRoomApplied: boolean, // PC방 혜택 적용 여부
+    bonusUnderTen: boolean, // 10성 이하 강화시 1+1 이벤트 적용 여부
+    eventDC30: boolean, // 강화 비용 30% 할인 이벤트 적용 여부
+    successOnFives: boolean // 5, 10, 15성 강화 성공 100% 이벤트 적용 여부
 };
