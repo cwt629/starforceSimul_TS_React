@@ -42,6 +42,50 @@ div.restore-cost-show {
   padding-right: 10%;
 }
 
+/* Options 컴포넌트 */
+div.options>div.simul-options {
+  /* margin: 10px; */
+}
+
+div.options div.form-check {
+  display: flex;
+  align-items: center;
+}
+
+div.options div.form-check>* {
+  padding: 0 5px;
+}
+
+
+div.simul-options {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 20px 10px;
+  padding: 10px;
+}
+
+div.simul-options .options-category {
+  position: absolute;
+  left: 5px;
+  top: -22px;
+  background-color: white;
+}
+
+div.discount-options div.discount-options-mvp {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+div.discount-options table.option-table * {
+  margin: 0;
+}
+
+div.event-options * {
+  margin: 3px 0;
+}
+
 /* LeaderBoard 컴포넌트 */
 div.result-board {
   font-size: 1.2rem;
@@ -89,35 +133,6 @@ img.star {
 
 div.simulator>div>* {
   margin: 10px;
-}
-
-div.simul-options {
-  position: relative;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 20px;
-  padding: 10px;
-}
-
-div.simul-options .options-category {
-  position: absolute;
-  left: 0;
-  top: -22px;
-  background-color: white;
-}
-
-div.simulator div.discount-options div.discount-options-mvp {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
-div.simulator div.discount-options table.option-table * {
-  margin: 0;
-}
-
-div.simulator div.event-options * {
-  margin: 3px 0;
 }
 
 div.simulator div.simul-ingame {
