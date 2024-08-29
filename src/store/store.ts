@@ -241,11 +241,62 @@ const simulSlice = createSlice({
                 pcRoomApplied: state.pcRoomApplied,
                 eventDC30: state.eventDC30
             });
+        },
+        // 10성 이하 강화 시 1+1 적용 체크
+        setBonusUnderTen: (state, action: PayloadAction<boolean>) => {
+            state.bonusUnderTen = action.payload;
+        },
+        // 강화 비용 30% 할인 체크
+        setEventDC30: (state, action: PayloadAction<boolean>) => {
+            state.eventDC30 = action.payload;
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
+        },
+        // 5, 10, 15성에서 강화 성공 100% 체크
+        setSuccessOnFives: (state, action: PayloadAction<boolean>) => {
+            state.successOnFives = action.payload;
+            // 확률 적용
+            if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
+                state.successPercent = 100;
+                state.failurePercent = 0;
+                state.destroyPercent = 0;
+            }
+            else {
+                state.successPercent = reinforceData.percentage[state.currentStar].success;
+                state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            }
+
+            // 확률 변동에 따라 cost 재계산(파괴방지에 의한 패널티 추가/제거 위함)
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
+        },
+        // 샤이닝 스타포스(5, 10, 15에서 100% + 강화 비용 30% 할인) 적용
+        setShiningStarforce: (state) => {
+            state.successOnFives = true;
+            state.eventDC30 = true;
+            // TODO: 확률과 비용 적용
         }
     }
 });
 
-export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult, setMVPRank, setPCRoomBonus } = simulSlice.actions;
+export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult,
+    setMVPRank, setPCRoomBonus, setBonusUnderTen, setEventDC30, setSuccessOnFives, setShiningStarforce
+} = simulSlice.actions;
 
 export const store = configureStore({
     reducer: simulSlice.reducer,
