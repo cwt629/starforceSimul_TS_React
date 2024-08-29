@@ -27,6 +27,7 @@ export interface CurrentState {
     totalFailure: number,
     totalDestroy: number,
     currentStar: number,
+    nextStar: number, // 현재 강화에서 성공하면 이동되는 단계
     originalCost: bigint, // 기존 비용
     cost: bigint, // 할인, 파괴방지 추가비용 등이 적용된 비용
     successPercent: number,

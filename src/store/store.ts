@@ -23,6 +23,7 @@ const initialState: CurrentState = {
     totalFailure: 0,
     totalDestroy: 0,
     currentStar: 0,
+    nextStar: 0,
     originalCost: BigInt(0),
     cost: BigInt(0),
     successPercent: 0,
@@ -58,6 +59,7 @@ const simulSlice = createSlice({
             state.totalFailure = 0;
             state.totalDestroy = 0;
             state.currentStar = action.payload.start;
+            state.nextStar = action.payload.start + 1;
             state.originalCost = getUpgradeCost(action.payload.level, action.payload.start);
             state.cost = state.originalCost;
             // 최대 강화 단계 미만인 경우만 설정
@@ -84,15 +86,28 @@ const simulSlice = createSlice({
             state.log.push({ result: Result.success, from: state.currentStar, to: state.currentStar + 1, fallen: false });
             state.totalSpent += state.cost;
             state.totalSuccess++;
-            state.currentStar++;
+            state.currentStar = state.nextStar;
+            // 10성 이하 1+1 강화가 체크되어 있는 경우를 고려한다
+            state.nextStar = (state.bonusUnderTen && state.currentStar <= 10) ? state.currentStar + 2 : state.currentStar + 1;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
 
 
             // 최대 강화 단계 미만인 경우만 설정
             if (state.currentStar < state.maxStar) {
-                state.successPercent = reinforceData.percentage[state.currentStar].success;
-                state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
-                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+                // state.successPercent = reinforceData.percentage[state.currentStar].success;
+                // state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                // state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+                // 확률 적용
+                if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
+                    state.successPercent = 100;
+                    state.failurePercent = 0;
+                    state.destroyPercent = 0;
+                }
+                else {
+                    state.successPercent = reinforceData.percentage[state.currentStar].success;
+                    state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                    state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+                }
                 state.ableToFall = !reinforceData.keeplevel[state.currentStar];
             }
 
@@ -125,10 +140,20 @@ const simulSlice = createSlice({
             state.totalSpent += state.cost;
             state.totalFailure++;
             state.currentStar = nextStar;
+            // 10성 이하 1+1 강화가 체크되어 있는 경우를 고려한다
+            state.nextStar = (state.bonusUnderTen && state.currentStar <= 10) ? state.currentStar + 2 : state.currentStar + 1;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
-            state.successPercent = reinforceData.percentage[state.currentStar].success;
-            state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
-            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            // 확률 적용
+            if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
+                state.successPercent = 100;
+                state.failurePercent = 0;
+                state.destroyPercent = 0;
+            }
+            else {
+                state.successPercent = reinforceData.percentage[state.currentStar].success;
+                state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            }
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
 
             // 찬스타임 구현
@@ -158,13 +183,23 @@ const simulSlice = createSlice({
             state.totalSpent += state.cost + state.restoreCost;
             state.totalDestroy++;
             state.currentStar = STAR_WHEN_DESTROYED;
+            // 10성 이하 1+1 강화가 체크되어 있는 경우를 고려한다
+            state.nextStar = (state.bonusUnderTen && state.currentStar <= 10) ? state.currentStar + 2 : state.currentStar + 1;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
             // // 파괴방지로 들어가는 penalty
             // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
             // state.cost = state.originalCost * preventPenalty;
-            state.successPercent = reinforceData.percentage[state.currentStar].success;
-            state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
-            state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            // 확률 적용
+            if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
+                state.successPercent = 100;
+                state.failurePercent = 0;
+                state.destroyPercent = 0;
+            }
+            else {
+                state.successPercent = reinforceData.percentage[state.currentStar].success;
+                state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            }
             state.ableToFall = !reinforceData.keeplevel[state.currentStar];
             state.cost = getActualCost({
                 originalCost: state.originalCost,
@@ -245,6 +280,8 @@ const simulSlice = createSlice({
         // 10성 이하 강화 시 1+1 적용 체크
         setBonusUnderTen: (state, action: PayloadAction<boolean>) => {
             state.bonusUnderTen = action.payload;
+            // 10성 이하 1+1 강화가 체크되어 있는 경우를 고려한다
+            state.nextStar = (state.bonusUnderTen && state.currentStar <= 10) ? state.currentStar + 2 : state.currentStar + 1;
         },
         // 강화 비용 30% 할인 체크
         setEventDC30: (state, action: PayloadAction<boolean>) => {
@@ -289,7 +326,30 @@ const simulSlice = createSlice({
         setShiningStarforce: (state) => {
             state.successOnFives = true;
             state.eventDC30 = true;
-            // TODO: 확률과 비용 적용
+            state.bonusUnderTen = false; // 온전히 샤이닝스타포스만 적용하기 위함
+
+            // 확률 적용
+            if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
+                state.successPercent = 100;
+                state.failurePercent = 0;
+                state.destroyPercent = 0;
+            }
+            else {
+                state.successPercent = reinforceData.percentage[state.currentStar].success;
+                state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
+                state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+            }
+
+            // 확률 변동에 따라 cost 재계산(파괴방지에 의한 패널티 추가/제거 위함)
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
         }
     }
 });

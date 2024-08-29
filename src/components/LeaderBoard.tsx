@@ -18,6 +18,7 @@ function LeaderBoard() {
     const totalDestroy: number = useSelector((state: RootState) => (state.totalDestroy));
     const cost: bigint = useSelector((state: RootState) => (state.cost));
     const currentStar: number = useSelector((state: RootState) => (state.currentStar));
+    const nextStar: number = useSelector((state: RootState) => (state.nextStar));
     const maxStar: number = useSelector((state: RootState) => (state.maxStar));
     const successPercent: number = useSelector((state: RootState) => (state.successPercent));
     const failurePercent: number = useSelector((state: RootState) => (state.failurePercent));
@@ -79,7 +80,7 @@ function LeaderBoard() {
                                     <StarDisplay />
                                     <div className="upgrade-info">
                                         {isChance(log) ? <div>CHANCE TIME!</div> : ''}
-                                        현재 단계: {currentStar}성<br />
+                                        현재 강화: {currentStar}성 {">"} {nextStar}성<br />
                                         {currentStar < maxStar ? <>
                                             강화 비용: {cost.toLocaleString()}메소<br />
                                             성공 확률: {successPercent.toFixed(1)}%<br />
