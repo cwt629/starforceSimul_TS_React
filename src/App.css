@@ -86,11 +86,6 @@ img.star {
 }
 
 /* Simulator 컴포넌트 */
-div.simulator {
-  /* display: flex;
-  justify-content: center;
-  flex-wrap: wrap; */
-}
 
 div.simulator>div>* {
   margin: 10px;
@@ -119,6 +114,10 @@ div.simulator div.discount-options div.discount-options-mvp {
 
 div.simulator div.discount-options table.option-table * {
   margin: 0;
+}
+
+div.simulator div.event-options * {
+  margin: 3px 0;
 }
 
 div.simulator div.simul-ingame {
