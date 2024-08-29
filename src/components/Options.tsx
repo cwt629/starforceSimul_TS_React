@@ -1,16 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatcher, RootState, setMVPRank } from "../store/store";
+import { Dispatcher, RootState, setMVPRank, setPCRoomBonus } from "../store/store";
 import { MVPRank } from "../type/discount";
+import React from "react";
 
 function Options() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
     const mvpRank: MVPRank = useSelector((state: RootState) => (state.mvpRank));
-
+    const pcRoomApplied: boolean = useSelector((state: RootState) => (state.pcRoomApplied));
     const dispatch: Dispatcher = useDispatch();
 
     // mvp 할인 적용에 대한 이벤트 핸들러
     const handleMVPClick = (mvp: MVPRank): void => {
         dispatch(setMVPRank(mvp));
+    }
+
+    // PC방 혜택 적용에 대한 이벤트 핸들러
+    const handlePCRoomClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checked: boolean = event.target.checked;
+        dispatch(setPCRoomBonus(checked));
     }
 
     return (
@@ -53,7 +60,8 @@ function Options() {
                                     <td>
                                         <div className="discount-options-pcroom">
                                             <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="pccheck" />
+                                                <input className="form-check-input" type="checkbox" id="pccheck" checked={pcRoomApplied}
+                                                    onChange={(e) => handlePCRoomClick(e)} />
                                                 <label className="form-check-label" htmlFor="pccheck">PC방 혜택 적용</label>
                                             </div>
                                         </div>

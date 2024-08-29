@@ -228,11 +228,24 @@ const simulSlice = createSlice({
                 pcRoomApplied: state.pcRoomApplied,
                 eventDC30: state.eventDC30
             });
+        },
+        // PC방 혜택 적용 체크
+        setPCRoomBonus: (state, action: PayloadAction<boolean>) => {
+            state.pcRoomApplied = action.payload;
+            state.cost = getActualCost({
+                originalCost: state.originalCost,
+                currentStar: state.currentStar,
+                destroyPercent: state.destroyPercent,
+                preventDestroy: state.preventDestroy,
+                mvpRank: state.mvpRank,
+                pcRoomApplied: state.pcRoomApplied,
+                eventDC30: state.eventDC30
+            });
         }
     }
 });
 
-export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult, setMVPRank } = simulSlice.actions;
+export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult, setMVPRank, setPCRoomBonus } = simulSlice.actions;
 
 export const store = configureStore({
     reducer: simulSlice.reducer,
