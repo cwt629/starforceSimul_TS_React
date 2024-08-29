@@ -1,6 +1,6 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrentState, InitialData } from "../type/state";
-import { getMaximumStarByLevel, isPreventableStar } from "../utils/reinforce";
+import { getMaximumStarByLevel } from "../utils/reinforce";
 import { getActualCost, getUpgradeCost } from "../utils/cost";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";

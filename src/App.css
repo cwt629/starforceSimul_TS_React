@@ -43,9 +43,6 @@ div.restore-cost-show {
 }
 
 /* Options 컴포넌트 */
-div.options>div.simul-options {
-  /* margin: 10px; */
-}
 
 div.options div.form-check {
   display: flex;
@@ -82,11 +79,15 @@ div.discount-options table.option-table * {
   margin: 0;
 }
 
-div.event-options * {
+div.event-options div.form-check * {
   margin: 3px 0;
 }
 
 /* LeaderBoard 컴포넌트 */
+#leaderboard {
+  padding: 0 10px;
+}
+
 div.result-board {
   font-size: 1.2rem;
 }
@@ -94,6 +95,10 @@ div.result-board {
 div.upgrade-info {
   height: 140px;
   overflow-y: auto;
+}
+
+#leaderboard table.setting-table>tbody>tr>td:nth-child(2) {
+  text-align: left;
 }
 
 tr.success>td.success-count {
@@ -106,6 +111,18 @@ tr.failure>td.failure-count {
 
 tr.destroy>td.destroy-count {
   background-color: var(--destroy-bg-color);
+}
+
+#optionModal div.modal-header-custom {
+  margin: 10px;
+  padding: 0;
+  position: relative;
+}
+
+#optionModal div.modal-header-custom button.modal-header-close {
+  position: absolute;
+  top: 0;
+  right: 10px;
 }
 
 /* StarDisplay 컴포넌트 */
