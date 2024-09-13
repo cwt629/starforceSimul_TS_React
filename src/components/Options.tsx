@@ -60,22 +60,22 @@ function Options() {
                                     <td width={150}>
                                         <div className="discount-options-mvp">
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="nomvp" name="mvp" checked={mvpRank === MVPRank.bronze}
+                                                <input type="radio" className="form-check-input" id="nomvp" name="mvp" defaultChecked={mvpRank === MVPRank.bronze}
                                                     onClick={() => handleMVPClick(MVPRank.bronze)} />
                                                 <label className="form-check-label" htmlFor="nomvp">브론즈</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="mvpsilver" name="mvp" checked={mvpRank === MVPRank.silver}
+                                                <input type="radio" className="form-check-input" id="mvpsilver" name="mvp" defaultChecked={mvpRank === MVPRank.silver}
                                                     onClick={() => handleMVPClick(MVPRank.silver)} />
                                                 <label className="form-check-label" htmlFor="mvpsilver">실버</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="mvpgold" name="mvp" checked={mvpRank === MVPRank.gold}
+                                                <input type="radio" className="form-check-input" id="mvpgold" name="mvp" defaultChecked={mvpRank === MVPRank.gold}
                                                     onClick={() => handleMVPClick(MVPRank.gold)} />
                                                 <label className="form-check-label" htmlFor="mvpgold">골드</label>
                                             </div>
                                             <div className="form-check">
-                                                <input type="radio" className="form-check-input" id="mvpdiared" name="mvp" checked={mvpRank === MVPRank.dia || mvpRank === MVPRank.red}
+                                                <input type="radio" className="form-check-input" id="mvpdiared" name="mvp" defaultChecked={mvpRank === MVPRank.dia || mvpRank === MVPRank.red}
                                                     onClick={() => handleMVPClick(MVPRank.dia)} />
                                                 <label className="form-check-label" htmlFor="mvpdiared">다이아/레드</label>
                                             </div>

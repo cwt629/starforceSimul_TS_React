@@ -155,7 +155,7 @@ function LeaderBoard() {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header-custom">
-                                <h4 className="modal-title">이벤트 설정</h4>
+                                <h4 className="modal-title">할인/이벤트 설정</h4>
                                 <button type="button" className="btn-close modal-header-close" data-bs-dismiss="modal"></button>
                             </div>
 
