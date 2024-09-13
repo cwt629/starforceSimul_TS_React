@@ -57,7 +57,7 @@ function LeaderBoard() {
                         </tr>
                         <tr>
                             <td>목표</td>
-                            <td className={achieved ? 'custom-bg-success' : ''}>{start}성 {">"} {goal}성 {achieved ? <b>(달성!)</b> : ''}</td>
+                            <td>{start}성 {">"} {goal}성 {achieved ? <b>(달성!)</b> : ''}</td>
                         </tr>
                         <tr>
                             <td>장비 복구 비용</td>
