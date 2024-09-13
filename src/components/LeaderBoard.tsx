@@ -32,6 +32,7 @@ function LeaderBoard() {
     const bonusUnderTen: boolean = useSelector((state: RootState) => (state.bonusUnderTen));
     const eventDC30: boolean = useSelector((state: RootState) => (state.eventDC30));
     const successOnFives: boolean = useSelector((state: RootState) => (state.successOnFives));
+    const achieved: boolean = useSelector((state: RootState) => (state.achieved));
     const recentResult: number = (log.length > 0) ? log[log.length - 1].result : -1;
 
     const MVPRankName: string = (mvpRank === MVPRank.bronze) ? "브론즈" :
@@ -56,7 +57,7 @@ function LeaderBoard() {
                         </tr>
                         <tr>
                             <td>목표</td>
-                            <td>{start}성 {">"} {goal}성</td>
+                            <td className={achieved ? 'custom-bg-success' : ''}>{start}성 {">"} {goal}성 {achieved ? <b>(달성!)</b> : ''}</td>
                         </tr>
                         <tr>
                             <td>장비 복구 비용</td>
