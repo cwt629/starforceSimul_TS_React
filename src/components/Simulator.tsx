@@ -67,6 +67,7 @@ function Simulator() {
                         text: '강화 내역이 저장되었습니다!\n나의 강화 기록 탭에서 확인하실 수 있습니다.',
                         buttonClass: 'btn btn-success'
                     });
+                    setAutoMode(false); // 완료된 후에는 자동 강화가 불가하게 한다
                 })
         }
     }, [achieved])
@@ -191,7 +192,7 @@ function Simulator() {
                         onClick={() => handleModeChange(false)}>직접 강화</span>
                 </li>
                 <li className="nav-item">
-                    <span className={`nav-link ${autoMode ? 'active' : ''}`}
+                    <span className={`nav-link ${autoMode ? 'active' : ''} ${achieved ? 'disabled' : ''}`}
                         onClick={() => handleModeChange(true)}>자동 강화</span>
                 </li>
             </ul>
@@ -224,7 +225,7 @@ function Simulator() {
                                 <button type="button" className="btn btn-primary"
                                     onClick={handleAutoPauseClick}>강화 중지 <i className="bi bi-pause-fill"></i>
                                 </button>
-                                : <button type="button" className="btn btn-primary"
+                                : <button type="button" className={`btn btn-primary ${achieved ? 'disabled' : ''}`}
                                     onClick={handleAutoStartClick}>강화 시작 <i className="bi bi-caret-right-fill"></i>
                                 </button>
                         }
