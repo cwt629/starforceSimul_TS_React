@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, saveResult, setPreventDestroy, setStarcatch } from "../store/store";
 import { Result, ResultExpectation } from "../type/result";
 import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { alertWithSwal, confirmWithSwal } from "../utils/alert";
 import { UserLog } from "../type/storage";
 import { LogData } from "../type/state";
@@ -32,7 +32,10 @@ function Simulator() {
     const dispatch: Dispatcher = useDispatch();
 
     const [autoMode, setAutoMode] = useState<boolean>(false); // 수동/자동 강화 모드를 boolean으로 선언
-    const [autoSpeed, setAutoSpeed] = useState<number>(200); // 자동 강화 속도
+    const [autoInterval, setAutoInterval] = useState<number>(1000); // 자동 강화 속도
+
+    const currentStarRef: React.MutableRefObject<number> = useRef(currentStar); // currentStar의 최신값을 담을 ref(자동 강화 시 갱신을 위함)
+    const autoRef: React.MutableRefObject<number | null> = useRef(null); // 자동 강화 루프를 돌리기 위한 ref
 
     // 자동 강화 속도 옵션들
     const autoSpeedOptions: AutoOption[] = [{ interval: 1000, name: '매우 느리게' }, { interval: 500, name: '느리게' },
@@ -70,6 +73,15 @@ function Simulator() {
                 })
         }
     }, [achieved])
+
+    useEffect(() => {
+        currentStarRef.current = currentStar; // currentStar 갱신마다 ref 갱신
+        // 자동 강화 도중 목표 달성 시 자동 강화 종료
+        if (autoRef.current && currentStarRef.current >= goal) {
+            clearInterval(autoRef.current);
+            autoRef.current = null;
+        }
+    }, [currentStar]);
 
     // 스타캐치 해제 체크박스 클릭 이벤트
     const handleStarCatch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,7 +137,7 @@ function Simulator() {
 
     // 자동 모드 - 강화 속도 변경
     const handleAutoSpeedChange = (speed: number) => {
-        setAutoSpeed(speed);
+        setAutoInterval(speed);
     }
 
     // 자동 강화 시작 버튼 클릭 이벤트
@@ -138,7 +150,12 @@ function Simulator() {
         });
         if (result.isDenied) return;
 
-        console.log("선택된 스피드는 " + autoSpeed);
+        autoRef.current = window.setInterval(() => {
+
+
+            handleReinforceClick(); // 강화 버튼을 누른 처리
+            console.log("현재 강화 단계: " + currentStarRef.current);
+        }, autoInterval);
     }
 
     return (ready ?
