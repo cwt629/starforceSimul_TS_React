@@ -39,7 +39,8 @@ const initialState: CurrentState = {
     pcRoomApplied: false,
     bonusUnderTen: false,
     eventDC30: false,
-    successOnFives: false
+    successOnFives: false,
+    autoIntervalID: null
 };
 
 const simulSlice = createSlice({
@@ -79,6 +80,7 @@ const simulSlice = createSlice({
             state.bonusUnderTen = false;
             state.eventDC30 = false;
             state.successOnFives = false;
+            state.autoIntervalID = null;
         },
         // 성공 처리
         grantSuccess: (state) => {
@@ -350,12 +352,16 @@ const simulSlice = createSlice({
                 pcRoomApplied: state.pcRoomApplied,
                 eventDC30: state.eventDC30
             });
+        },
+        // 자동 강화 interval 관리
+        setAutoIntervalID: (state, action: PayloadAction<number | null>) => {
+            state.autoIntervalID = action.payload;
         }
     }
 });
 
 export const { init, grantSuccess, grantFailure, grantDestroy, setStarcatch, setPreventDestroy, saveResult,
-    setMVPRank, setPCRoomBonus, setBonusUnderTen, setEventDC30, setSuccessOnFives, setShiningStarforce
+    setMVPRank, setPCRoomBonus, setBonusUnderTen, setEventDC30, setSuccessOnFives, setShiningStarforce, setAutoIntervalID
 } = simulSlice.actions;
 
 export const store = configureStore({

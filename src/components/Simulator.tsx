@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, saveResult, setPreventDestroy, setStarcatch } from "../store/store";
+import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, saveResult, setAutoIntervalID, setPreventDestroy, setStarcatch } from "../store/store";
 import { Result, ResultExpectation } from "../type/result";
 import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
 import React, { useEffect, useState } from "react";
@@ -28,11 +28,12 @@ function Simulator() {
     const totalDestroy: number = useSelector((state: RootState) => (state.totalDestroy));
     const totalSpent: bigint = useSelector((state: RootState) => (state.totalSpent));
     const autoSaved: boolean = useSelector((state: RootState) => (state.autoSaved));
+    const autoIntervalID: number | null = useSelector((state: RootState) => (state.autoIntervalID));
     const dispatch: Dispatcher = useDispatch();
 
     const [autoMode, setAutoMode] = useState<boolean>(false); // 수동/자동 강화 모드를 boolean으로 선언
     const [autoInterval, setAutoInterval] = useState<number>(1000); // 자동 강화 속도
-    const [autoIntervalID, setAutoIntervalID] = useState<number | null>(null); // 자동 강화 루프를 돌리기 위한 상태
+    // const [autoIntervalID, setAutoIntervalID] = useState<number | null>(null); // 자동 강화 루프를 돌리기 위한 상태
 
     // 자동 강화 속도 옵션들
     const autoSpeedOptions: AutoOption[] = [{ interval: 1000, name: '매우 느리게' }, { interval: 500, name: '느리게' },
@@ -86,7 +87,7 @@ function Simulator() {
 
         // 상태값이 변경될 때마다 interval 새로 설정
         const intervalID = window.setInterval(handleReinforceClick, autoInterval);
-        setAutoIntervalID(intervalID);
+        dispatch(setAutoIntervalID(intervalID));
 
         // 컴포넌트 언마운트 시 interval 정리
         return () => {
@@ -100,7 +101,7 @@ function Simulator() {
     const stopAutoReinforce = () => {
         if (autoIntervalID) {
             clearInterval(autoIntervalID);
-            setAutoIntervalID(null);
+            dispatch(setAutoIntervalID(null));
         }
     }
 
@@ -174,7 +175,7 @@ function Simulator() {
         const intervalID: number = window.setInterval(() => {
             handleReinforceClick(); // 강화 버튼을 누른 처리
         }, autoInterval);
-        setAutoIntervalID(intervalID);
+        dispatch(setAutoIntervalID(intervalID));
     }
 
     // 자동 강화 중지 버튼 클릭 이벤트
