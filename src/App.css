@@ -152,6 +152,18 @@ div.simulator>div>* {
   margin: 10px;
 }
 
+ul.simul-tabs * {
+  margin: 0;
+}
+
+ul.simul-tabs {
+  margin-bottom: 30px;
+}
+
+ul.simul-tabs span.nav-link {
+  cursor: pointer;
+}
+
 div.simulator div.simul-ingame {
   display: flex;
   justify-content: center;

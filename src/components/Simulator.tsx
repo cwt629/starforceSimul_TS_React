@@ -2,11 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, saveResult, setPreventDestroy, setStarcatch } from "../store/store";
 import { Result, ResultExpectation } from "../type/result";
 import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
-import React, { useEffect } from "react";
-import { alertWithSwal } from "../utils/alert";
+import React, { useEffect, useState } from "react";
+import { alertWithSwal, confirmWithSwal } from "../utils/alert";
 import { UserLog } from "../type/storage";
 import { LogData } from "../type/state";
 import { finishAndGetTitle } from "../utils/storage";
+import { SweetAlertResult } from "sweetalert2";
+import { AutoOption } from "../type/auto";
 
 function Simulator() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
@@ -28,6 +30,14 @@ function Simulator() {
     const totalSpent: bigint = useSelector((state: RootState) => (state.totalSpent));
     const autoSaved: boolean = useSelector((state: RootState) => (state.autoSaved));
     const dispatch: Dispatcher = useDispatch();
+
+    const [autoMode, setAutoMode] = useState<boolean>(false); // 수동/자동 강화 모드를 boolean으로 선언
+    const [autoSpeed, setAutoSpeed] = useState<number>(200); // 자동 강화 속도
+
+    // 자동 강화 속도 옵션들
+    const autoSpeedOptions: AutoOption[] = [{ interval: 1000, name: '매우 느리게' }, { interval: 500, name: '느리게' },
+    { interval: 200, name: '보통' }, { interval: 100, name: '빠르게' }, { interval: 50, name: '매우 빠르게' }
+    ];
 
     useEffect(() => {
         if (achieved && !autoSaved) {
@@ -74,7 +84,7 @@ function Simulator() {
     }
 
     // 강화하기 버튼 클릭 이벤트
-    const handleClick = () => {
+    const handleReinforceClick = () => {
         // 이미 최대 강화 단계인 경우
         if (currentStar >= maxStar) {
             alertWithSwal({ icon: 'info', text: '이미 최대 강화 단계에 도달했습니다.', buttonClass: 'btn btn-primary' });
@@ -108,25 +118,87 @@ function Simulator() {
         }
     }
 
+    // 수동/자동 모드 변경
+    const handleModeChange = (autoMode: boolean) => {
+        setAutoMode(autoMode);
+    }
+
+    // 자동 모드 - 강화 속도 변경
+    const handleAutoSpeedChange = (speed: number) => {
+        setAutoSpeed(speed);
+    }
+
+    // 자동 강화 시작 버튼 클릭 이벤트
+    const handleAutoStartClick = async () => {
+        const result = await confirmWithSwal({
+            icon: 'warning',
+            text: `${goal}성까지 강화를 시작할까요?\n중간에 정지할 수 없습니다.`,
+            buttonClass: 'btn btn-primary',
+            buttonClass2: 'btn btn-secondary'
+        });
+        if (result.isDenied) return;
+
+        console.log("선택된 스피드는 " + autoSpeed);
+    }
+
     return (ready ?
         <div className="simulator">
+            <ul className="nav nav-tabs nav-justified simul-tabs">
+                <li className="nav-item">
+                    <span className={`nav-link ${autoMode ? '' : 'active'}`}
+                        onClick={() => handleModeChange(false)}>직접 강화</span>
+                </li>
+                <li className="nav-item">
+                    <span className={`nav-link ${autoMode ? 'active' : ''}`}
+                        onClick={() => handleModeChange(true)}>자동 강화</span>
+                </li>
+            </ul>
+            {
+                autoMode ?
+                    <div className="simul-ingame">
+                        <div className="form-check">
+                            <input type="checkbox" className="form-check-input" id="starcatch"
+                                checked={noStarcatch}
+                                onChange={(e) => handleStarCatch(e)} />
+                            <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+                        </div>
+                        <div className="form-check">
+                            <input type="checkbox" className="form-check-input" id="destroyShield"
+                                checked={preventDestroy}
+                                onChange={(e) => handlePreventDestroy(e)} />
+                            <label className="form-check-label" htmlFor="destroyShield">파괴방지 적용</label>
+                        </div>
+                        <div className="input-group">
+                            <span className="input-group-text">강화 속도</span>
+                            <select className="form-select" onChange={(e) => handleAutoSpeedChange(Number(e.target.value))}>
+                                {
+                                    autoSpeedOptions.map((option, i) => <option key={i} value={option.interval}>{option.name}(1초당 {(1000 / option.interval).toFixed(1)}회)</option>)
+                                }
+                            </select>
+                        </div>
 
-            <div className="simul-ingame">
-                <div className="form-check">
-                    <input type="checkbox" className="form-check-input" id="starcatch"
-                        checked={noStarcatch}
-                        onChange={(e) => handleStarCatch(e)} />
-                    <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
-                </div>
-                <div className="form-check">
-                    <input type="checkbox" className="form-check-input" id="destroyShield"
-                        checked={preventDestroy}
-                        onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
-                    <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
-                </div>
-                <button type="button" className="btn btn-outline-primary"
-                    onClick={handleClick}>강화하기</button>
-            </div>
+                        <button type="button" className="btn btn-primary"
+                            onClick={handleAutoStartClick}>강화 시작 <i className="bi bi-caret-right-fill"></i>
+                        </button>
+                    </div>
+                    :
+                    <div className="simul-ingame">
+                        <div className="form-check">
+                            <input type="checkbox" className="form-check-input" id="starcatch"
+                                checked={noStarcatch}
+                                onChange={(e) => handleStarCatch(e)} />
+                            <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+                        </div>
+                        <div className="form-check">
+                            <input type="checkbox" className="form-check-input" id="destroyShield"
+                                checked={preventDestroy}
+                                onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
+                            <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
+                        </div>
+                        <button type="button" className="btn btn-outline-primary"
+                            onClick={handleReinforceClick}>강화하기</button>
+                    </div>
+            }
 
         </div> : <></>
     )

@@ -36,13 +36,10 @@ export async function confirmWithSwal({ icon, text, buttonClass, buttonClass2, s
         denyButtonText: '취소',
         scrollbarPadding: scrollbarPadding,
         customClass: {
-            confirmButton: buttonClass,
-            denyButton: buttonClass2
+            confirmButton: buttonClass + ' mg-10',
+            denyButton: buttonClass2 + ' mg-10'
         },
-        buttonsStyling: false,
-        didClose: () => {
-            autoScrollByID("leaderboard");
-        }
+        buttonsStyling: false
     })
     return result;
 }
