@@ -99,7 +99,10 @@ function LeaderBoard() {
                 <table className="table table-bordered">
                     <tbody>
                         <tr>
-                            <td colSpan={3}>
+                            <td colSpan={3} className={recentResult === Result.success ? 'custom-bg-success'
+                                : recentResult === Result.failure ? 'custom-bg-failure'
+                                    : recentResult === Result.destroy ? 'custom-bg-destroy' : ''
+                            }>
                                 <div className="result-board">
                                     {recentResult === Result.success ? "강화 성공!"
                                         : recentResult === Result.failure ? "강화 실패"
