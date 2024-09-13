@@ -2,12 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatcher, grantDestroy, grantFailure, grantSuccess, RootState, saveResult, setPreventDestroy, setStarcatch } from "../store/store";
 import { Result, ResultExpectation } from "../type/result";
 import { getExpectationByStarcatch, getReinforceResult, isPreventableStar } from "../utils/reinforce";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { alertWithSwal, confirmWithSwal } from "../utils/alert";
 import { UserLog } from "../type/storage";
 import { LogData } from "../type/state";
 import { finishAndGetTitle } from "../utils/storage";
-import { SweetAlertResult } from "sweetalert2";
 import { AutoOption } from "../type/auto";
 
 function Simulator() {
@@ -33,10 +32,7 @@ function Simulator() {
 
     const [autoMode, setAutoMode] = useState<boolean>(false); // 수동/자동 강화 모드를 boolean으로 선언
     const [autoInterval, setAutoInterval] = useState<number>(1000); // 자동 강화 속도
-    const [isAutoRunning, setIsAutoRunning] = useState<boolean>(false); // 자동 강화중인지 여부
-
-    const currentStarRef: React.MutableRefObject<number> = useRef(currentStar); // currentStar의 최신값을 담을 ref(자동 강화 시 갱신을 위함)
-    const autoRef: React.MutableRefObject<number | null> = useRef(null); // 자동 강화 루프를 돌리기 위한 ref
+    const [autoIntervalID, setAutoIntervalID] = useState<number | null>(null); // 자동 강화 루프를 돌리기 위한 상태
 
     // 자동 강화 속도 옵션들
     const autoSpeedOptions: AutoOption[] = [{ interval: 1000, name: '매우 느리게' }, { interval: 500, name: '느리게' },
@@ -76,19 +72,34 @@ function Simulator() {
     }, [achieved])
 
     useEffect(() => {
-        currentStarRef.current = currentStar; // currentStar 갱신마다 ref 갱신
         // 자동 강화 도중 목표 달성 시 자동 강화 종료
-        if (autoRef.current && currentStarRef.current >= goal) {
+        if (autoIntervalID && currentStar >= goal) {
             stopAutoReinforce();
+            return;
         }
-    }, [currentStar]);
+        // 이전 interval 정리
+        if (!autoIntervalID) return;
+        if (autoIntervalID) {
+            clearInterval(autoIntervalID);
+        }
 
-    // autoRef에 등록된 interval을 정지하는 함수
+        // 상태값이 변경될 때마다 interval 새로 설정
+        const intervalID = window.setInterval(handleReinforceClick, autoInterval);
+        setAutoIntervalID(intervalID);
+
+        // 컴포넌트 언마운트 시 interval 정리
+        return () => {
+            if (autoIntervalID) {
+                clearInterval(autoIntervalID);
+            }
+        }
+    }, [autoInterval, currentStar, goal, successPercent, destroyPercent, noStarcatch, preventDestroy]);
+
+    // 등록된 interval을 정지하는 함수
     const stopAutoReinforce = () => {
-        if (autoRef.current) {
-            clearInterval(autoRef.current);
-            autoRef.current = null;
-            setIsAutoRunning(false);
+        if (autoIntervalID) {
+            clearInterval(autoIntervalID);
+            setAutoIntervalID(null);
         }
     }
 
@@ -124,7 +135,6 @@ function Simulator() {
         let finalExp: ResultExpectation = getExpectationByStarcatch(currentExp, !noStarcatch);
 
         const result: Result = getReinforceResult(finalExp.success, finalExp.destroy);
-        console.log(result);
         switch (result) {
             case Result.success:
                 dispatch(grantSuccess());
@@ -154,21 +164,21 @@ function Simulator() {
     const handleAutoStartClick = async () => {
         const result = await confirmWithSwal({
             icon: 'warning',
-            text: `${goal}성까지 강화를 시작할까요?\n중간에 중지할 수 있습니다.`,
+            text: `${goal}성까지 강화를 시작할까요?\n자동 강화 중엔 옵션 변경이 불가하며\n강화는 중간에 중지할 수 있습니다.`,
             buttonClass: 'btn btn-primary',
             buttonClass2: 'btn btn-secondary'
         });
         if (result.isDenied) return;
 
-        setIsAutoRunning(true);
-        autoRef.current = window.setInterval(() => {
+        const intervalID: number = window.setInterval(() => {
             handleReinforceClick(); // 강화 버튼을 누른 처리
         }, autoInterval);
+        setAutoIntervalID(intervalID);
     }
 
     // 자동 강화 중지 버튼 클릭 이벤트
     const handleAutoPauseClick = () => {
-        if (autoRef.current) {
+        if (autoIntervalID) {
             stopAutoReinforce();
         }
     }
@@ -210,7 +220,7 @@ function Simulator() {
                         </div>
 
                         {
-                            isAutoRunning ?
+                            autoIntervalID ?
                                 <button type="button" className="btn btn-primary"
                                     onClick={handleAutoPauseClick}>강화 중지 <i className="bi bi-pause-fill"></i>
                                 </button>
