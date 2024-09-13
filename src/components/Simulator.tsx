@@ -33,6 +33,7 @@ function Simulator() {
 
     const [autoMode, setAutoMode] = useState<boolean>(false); // 수동/자동 강화 모드를 boolean으로 선언
     const [autoInterval, setAutoInterval] = useState<number>(1000); // 자동 강화 속도
+    const [isAutoRunning, setIsAutoRunning] = useState<boolean>(false); // 자동 강화중인지 여부
 
     const currentStarRef: React.MutableRefObject<number> = useRef(currentStar); // currentStar의 최신값을 담을 ref(자동 강화 시 갱신을 위함)
     const autoRef: React.MutableRefObject<number | null> = useRef(null); // 자동 강화 루프를 돌리기 위한 ref
@@ -78,10 +79,18 @@ function Simulator() {
         currentStarRef.current = currentStar; // currentStar 갱신마다 ref 갱신
         // 자동 강화 도중 목표 달성 시 자동 강화 종료
         if (autoRef.current && currentStarRef.current >= goal) {
-            clearInterval(autoRef.current);
-            autoRef.current = null;
+            stopAutoReinforce();
         }
     }, [currentStar]);
+
+    // autoRef에 등록된 interval을 정지하는 함수
+    const stopAutoReinforce = () => {
+        if (autoRef.current) {
+            clearInterval(autoRef.current);
+            autoRef.current = null;
+            setIsAutoRunning(false);
+        }
+    }
 
     // 스타캐치 해제 체크박스 클릭 이벤트
     const handleStarCatch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,6 +124,7 @@ function Simulator() {
         let finalExp: ResultExpectation = getExpectationByStarcatch(currentExp, !noStarcatch);
 
         const result: Result = getReinforceResult(finalExp.success, finalExp.destroy);
+        console.log(result);
         switch (result) {
             case Result.success:
                 dispatch(grantSuccess());
@@ -144,18 +154,23 @@ function Simulator() {
     const handleAutoStartClick = async () => {
         const result = await confirmWithSwal({
             icon: 'warning',
-            text: `${goal}성까지 강화를 시작할까요?\n중간에 정지할 수 없습니다.`,
+            text: `${goal}성까지 강화를 시작할까요?\n중간에 중지할 수 있습니다.`,
             buttonClass: 'btn btn-primary',
             buttonClass2: 'btn btn-secondary'
         });
         if (result.isDenied) return;
 
+        setIsAutoRunning(true);
         autoRef.current = window.setInterval(() => {
-
-
             handleReinforceClick(); // 강화 버튼을 누른 처리
-            console.log("현재 강화 단계: " + currentStarRef.current);
         }, autoInterval);
+    }
+
+    // 자동 강화 중지 버튼 클릭 이벤트
+    const handleAutoPauseClick = () => {
+        if (autoRef.current) {
+            stopAutoReinforce();
+        }
     }
 
     return (ready ?
@@ -194,9 +209,16 @@ function Simulator() {
                             </select>
                         </div>
 
-                        <button type="button" className="btn btn-primary"
-                            onClick={handleAutoStartClick}>강화 시작 <i className="bi bi-caret-right-fill"></i>
-                        </button>
+                        {
+                            isAutoRunning ?
+                                <button type="button" className="btn btn-primary"
+                                    onClick={handleAutoPauseClick}>강화 중지 <i className="bi bi-pause-fill"></i>
+                                </button>
+                                : <button type="button" className="btn btn-primary"
+                                    onClick={handleAutoStartClick}>강화 시작 <i className="bi bi-caret-right-fill"></i>
+                                </button>
+                        }
+
                     </div>
                     :
                     <div className="simul-ingame">
