@@ -188,11 +188,11 @@ function Simulator() {
         <div className="simulator">
             <ul className="nav nav-tabs nav-justified simul-tabs">
                 <li className="nav-item">
-                    <span className={`nav-link ${autoMode ? '' : 'active'}`}
+                    <span className={`nav-link ${autoMode ? '' : 'active'} ${autoIntervalID ? 'disabled' : ''}`}
                         onClick={() => handleModeChange(false)}>직접 강화</span>
                 </li>
                 <li className="nav-item">
-                    <span className={`nav-link ${autoMode ? 'active' : ''} ${achieved ? 'disabled' : ''}`}
+                    <span className={`nav-link ${autoMode ? 'active' : ''} ${achieved || autoIntervalID ? 'disabled' : ''}`}
                         onClick={() => handleModeChange(true)}>자동 강화</span>
                 </li>
             </ul>
