@@ -217,9 +217,9 @@ function Simulator() {
                             </div>
                             <div className="input-group">
                                 <span className="input-group-text">강화 속도</span>
-                                <select className="form-select" onChange={(e) => handleAutoSpeedChange(Number(e.target.value))}>
+                                <select className="form-select" onChange={(e) => handleAutoSpeedChange(Number(e.target.value))} defaultValue={autoInterval}>
                                     {
-                                        autoSpeedOptions.map((option, i) => <option key={i} value={option.interval}>{option.name}(1초당 {(1000 / option.interval).toFixed(1)}회)</option>)
+                                        autoSpeedOptions.map((option, i) => <option key={i} value={option.interval} >{option.name}(1초당 {(1000 / option.interval).toFixed(1)}회)</option>)
                                     }
                                 </select>
                             </div>
