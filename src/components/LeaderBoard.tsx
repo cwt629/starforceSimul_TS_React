@@ -7,6 +7,7 @@ import StarDisplay from "./StarDisplay";
 import Simulator from "./Simulator";
 import { MVPRank } from "../type/discount";
 import Options from "./Options";
+import { AutoInterval } from "../type/auto";
 
 function LeaderBoard() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
@@ -33,6 +34,7 @@ function LeaderBoard() {
     const eventDC30: boolean = useSelector((state: RootState) => (state.eventDC30));
     const successOnFives: boolean = useSelector((state: RootState) => (state.successOnFives));
     const achieved: boolean = useSelector((state: RootState) => (state.achieved));
+    const autoIntervalID: AutoInterval = useSelector((state: RootState) => (state.autoIntervalID));
     const recentResult: number = (log.length > 0) ? log[log.length - 1].result : -1;
 
     const MVPRankName: string = (mvpRank === MVPRank.bronze) ? "브론즈" :
@@ -66,7 +68,7 @@ function LeaderBoard() {
                         <tr>
                             <td>
                                 할인/이벤트<br />
-                                <button type="button" className="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#optionModal">
+                                <button type="button" className={`btn btn-sm btn-primary ${autoIntervalID ? 'disabled' : ''}`} data-bs-toggle="modal" data-bs-target="#optionModal">
                                     <i className="bi bi-gear"></i>&nbsp;설정
                                 </button>
                             </td>

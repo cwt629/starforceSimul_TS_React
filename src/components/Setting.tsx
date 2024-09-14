@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isValidGoal, isValidLevel, isValidRestoreCost, isValidStart } from "../utils/validate";
 import { alertWithSwal, confirmRestartSimulation } from "../utils/alert";
 import { autoScrollByID } from "../utils/autoscroll";
+import { AutoInterval } from "../type/auto";
 
 
 function Setting() {
@@ -14,6 +15,7 @@ function Setting() {
     const [restoreCost, setRestoreCost] = useState("0");
 
     const ready: boolean = useSelector((state: RootState) => (state.ready));
+    const autoIntervalID: AutoInterval = useSelector((state: RootState) => (state.autoIntervalID));
     const dispatch: Dispatcher = useDispatch();
 
     // form 제출 이벤트
@@ -149,7 +151,7 @@ function Setting() {
                     </tr>
                 </tbody>
             </table>
-            <button type="submit" className="btn btn-success">{ready ? "시뮬레이션 재시작" : "시뮬레이션 시작"}</button>
+            <button type="submit" className={`btn btn-success ${autoIntervalID ? 'disabled' : ''}`}>{ready ? "시뮬레이션 재시작" : "시뮬레이션 시작"}</button>
         </form>
     )
 }
