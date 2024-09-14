@@ -7,7 +7,7 @@ import { alertWithSwal, confirmWithSwal } from "../utils/alert";
 import { UserLog } from "../type/storage";
 import { LogData } from "../type/state";
 import { finishAndGetTitle } from "../utils/storage";
-import { AutoOption } from "../type/auto";
+import { AutoInterval, AutoOption } from "../type/auto";
 
 function Simulator() {
     const ready: boolean = useSelector((state: RootState) => (state.ready));
@@ -28,12 +28,11 @@ function Simulator() {
     const totalDestroy: number = useSelector((state: RootState) => (state.totalDestroy));
     const totalSpent: bigint = useSelector((state: RootState) => (state.totalSpent));
     const autoSaved: boolean = useSelector((state: RootState) => (state.autoSaved));
-    const autoIntervalID: number | null = useSelector((state: RootState) => (state.autoIntervalID));
+    const autoIntervalID: AutoInterval = useSelector((state: RootState) => (state.autoIntervalID));
     const dispatch: Dispatcher = useDispatch();
 
     const [autoMode, setAutoMode] = useState<boolean>(false); // 수동/자동 강화 모드를 boolean으로 선언
     const [autoInterval, setAutoInterval] = useState<number>(1000); // 자동 강화 속도
-    // const [autoIntervalID, setAutoIntervalID] = useState<number | null>(null); // 자동 강화 루프를 돌리기 위한 상태
 
     // 자동 강화 속도 옵션들
     const autoSpeedOptions: AutoOption[] = [{ interval: 1000, name: '매우 느리게' }, { interval: 500, name: '느리게' },

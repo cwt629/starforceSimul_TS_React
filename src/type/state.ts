@@ -1,3 +1,4 @@
+import { AutoInterval } from "./auto"
 import { MVPRank } from "./discount"
 import { Result } from "./result"
 
@@ -44,5 +45,5 @@ export interface CurrentState {
     bonusUnderTen: boolean, // 10성 이하 강화시 1+1 이벤트 적용 여부
     eventDC30: boolean, // 강화 비용 30% 할인 이벤트 적용 여부
     successOnFives: boolean, // 5, 10, 15성 강화 성공 100% 이벤트 적용 여부
-    autoIntervalID: number | null
+    autoIntervalID: AutoInterval // 자동 강화 루프(setInterval) ID
 };

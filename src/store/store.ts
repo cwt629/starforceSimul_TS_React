@@ -7,6 +7,7 @@ import { isChance } from "../utils/chance";
 import { saveLogOnStorage } from "../utils/storage";
 import { UserLog } from "../type/storage";
 import { MVPRank } from "../type/discount";
+import { AutoInterval } from "../type/auto";
 
 const reinforceData = require("../data/reinforce-data.json");
 const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
@@ -354,7 +355,7 @@ const simulSlice = createSlice({
             });
         },
         // 자동 강화 interval 관리
-        setAutoIntervalID: (state, action: PayloadAction<number | null>) => {
+        setAutoIntervalID: (state, action: PayloadAction<AutoInterval>) => {
             state.autoIntervalID = action.payload;
         }
     }
