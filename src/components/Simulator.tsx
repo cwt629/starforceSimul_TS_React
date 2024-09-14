@@ -199,26 +199,32 @@ function Simulator() {
             {
                 autoMode ?
                     <div className="simul-ingame">
-                        <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="starcatch"
-                                checked={noStarcatch}
-                                onChange={(e) => handleStarCatch(e)} />
-                            <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+                        <div className="auto-option-block">
+                            <div className="simul-options option-ingame">
+                                <span className="options-category">인게임 옵션</span>
+                                <div className="form-check">
+                                    <input type="checkbox" className="form-check-input" id="starcatch"
+                                        checked={noStarcatch}
+                                        onChange={(e) => handleStarCatch(e)} />
+                                    <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+                                </div>
+                                <div className="form-check">
+                                    <input type="checkbox" className="form-check-input" id="destroyShield"
+                                        checked={preventDestroy}
+                                        onChange={(e) => handlePreventDestroy(e)} />
+                                    <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
+                                </div>
+                            </div>
+                            <div className="input-group">
+                                <span className="input-group-text">강화 속도</span>
+                                <select className="form-select" onChange={(e) => handleAutoSpeedChange(Number(e.target.value))}>
+                                    {
+                                        autoSpeedOptions.map((option, i) => <option key={i} value={option.interval}>{option.name}(1초당 {(1000 / option.interval).toFixed(1)}회)</option>)
+                                    }
+                                </select>
+                            </div>
                         </div>
-                        <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="destroyShield"
-                                checked={preventDestroy}
-                                onChange={(e) => handlePreventDestroy(e)} />
-                            <label className="form-check-label" htmlFor="destroyShield">파괴방지 적용</label>
-                        </div>
-                        <div className="input-group">
-                            <span className="input-group-text">강화 속도</span>
-                            <select className="form-select" onChange={(e) => handleAutoSpeedChange(Number(e.target.value))}>
-                                {
-                                    autoSpeedOptions.map((option, i) => <option key={i} value={option.interval}>{option.name}(1초당 {(1000 / option.interval).toFixed(1)}회)</option>)
-                                }
-                            </select>
-                        </div>
+
 
                         {
                             autoIntervalID ?
@@ -233,17 +239,22 @@ function Simulator() {
                     </div>
                     :
                     <div className="simul-ingame">
-                        <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="starcatch"
-                                checked={noStarcatch}
-                                onChange={(e) => handleStarCatch(e)} />
-                            <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
-                        </div>
-                        <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="destroyShield"
-                                checked={preventDestroy}
-                                onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
-                            <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
+                        <div className="manual-option-block">
+                            <div className="simul-options option-ingame">
+                                <span className="options-category">인게임 옵션</span>
+                                <div className="form-check">
+                                    <input type="checkbox" className="form-check-input" id="starcatch"
+                                        checked={noStarcatch}
+                                        onChange={(e) => handleStarCatch(e)} />
+                                    <label className="form-check-label" htmlFor="starcatch">스타캐치 해제</label>
+                                </div>
+                                <div className="form-check">
+                                    <input type="checkbox" className="form-check-input" id="destroyShield"
+                                        checked={preventDestroy}
+                                        onChange={(e) => handlePreventDestroy(e)} disabled={destroyPercent === 0 || !isPreventableStar(currentStar)} />
+                                    <label className="form-check-label" htmlFor="destroyShield">파괴방지</label>
+                                </div>
+                            </div>
                         </div>
                         <button type="button" className="btn btn-outline-primary"
                             onClick={handleReinforceClick}>강화하기</button>

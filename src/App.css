@@ -176,10 +176,24 @@ ul.simul-tabs span.nav-link {
   cursor: pointer;
 }
 
-div.simulator div.simul-ingame {
+
+div.manual-option-block,
+div.auto-option-block {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  width: 100%;
+  position: relative;
+}
+
+div.option-ingame {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.option-ingame>div {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 div.simulator div.form-check {
