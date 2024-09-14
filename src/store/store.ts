@@ -251,7 +251,7 @@ const simulSlice = createSlice({
                     cost: state.totalSpent
                 }
             };
-            saveLogOnStorage(userLog);
+            if (!state.autoSaved) saveLogOnStorage(userLog);
             state.autoSaved = true;
         },
         // mvp 체크

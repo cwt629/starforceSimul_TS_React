@@ -51,7 +51,8 @@ export async function finishAndGetTitle(userLog: UserLog): Promise<string> {
         customClass: {
             confirmButton: 'btn btn-primary'
         },
-        buttonsStyling: false
+        buttonsStyling: false,
+        allowOutsideClick: false // 모달 밖 클릭 비활성화
     });
 
     if (!userInput)
