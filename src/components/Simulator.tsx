@@ -223,6 +223,18 @@ function Simulator() {
                                     }
                                 </select>
                             </div>
+
+                            {
+                                autoIntervalID ?
+                                    <div className="auto-prevention-block">
+                                        <div className="auto-prevention-paper"></div>
+                                        <div className="auto-prevention-text">
+                                            자동 강화 진행 중 <span className="spinner-border text-primary auto-spinner"></span>
+                                        </div>
+                                    </div>
+                                    : <></>
+                            }
+
                         </div>
 
 
