@@ -97,9 +97,6 @@ const simulSlice = createSlice({
 
             // 최대 강화 단계 미만인 경우만 설정
             if (state.currentStar < state.maxStar) {
-                // state.successPercent = reinforceData.percentage[state.currentStar].success;
-                // state.destroyPercent = reinforceData.percentage[state.currentStar].destroy;
-                // state.failurePercent = 100 - state.successPercent - state.destroyPercent;
                 // 확률 적용
                 if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
                     state.successPercent = 100;
@@ -114,9 +111,6 @@ const simulSlice = createSlice({
                 state.ableToFall = !reinforceData.keeplevel[state.currentStar];
             }
 
-            // // 파괴방지로 들어가는 penalty
-            // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            // state.cost = state.originalCost * preventPenalty;
             state.cost = getActualCost({
                 originalCost: state.originalCost,
                 currentStar: state.currentStar,
@@ -167,8 +161,6 @@ const simulSlice = createSlice({
             }
 
             // // 파괴방지로 들어가는 penalty
-            // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            // state.cost = state.originalCost * preventPenalty;
             state.cost = getActualCost({
                 originalCost: state.originalCost,
                 currentStar: state.currentStar,
@@ -189,9 +181,6 @@ const simulSlice = createSlice({
             // 10성 이하 1+1 강화가 체크되어 있는 경우를 고려한다
             state.nextStar = (state.bonusUnderTen && state.currentStar <= 10) ? state.currentStar + 2 : state.currentStar + 1;
             state.originalCost = getUpgradeCost(state.level, state.currentStar);
-            // // 파괴방지로 들어가는 penalty
-            // let preventPenalty: bigint = BigInt((isPreventableStar(state.currentStar) && state.destroyPercent > 0 && state.preventDestroy) ? 2 : 1);
-            // state.cost = state.originalCost * preventPenalty;
             // 확률 적용
             if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
                 state.successPercent = 100;
