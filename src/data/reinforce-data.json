@@ -1,131 +1,124 @@
 {
-    "percentage": [
-        {
-            "success": 95,
-            "destroy": 0
-        },
-        {
-            "success": 90,
-            "destroy": 0
-        },
-        {
-            "success": 85,
-            "destroy": 0
-        },
-        {
-            "success": 85,
-            "destroy": 0
-        },
-        {
-            "success": 80,
-            "destroy": 0
-        },
-        {
-            "success": 75,
-            "destroy": 0
-        },
-        {
-            "success": 70,
-            "destroy": 0
-        },
-        {
-            "success": 65,
-            "destroy": 0
-        },
-        {
-            "success": 60,
-            "destroy": 0
-        },
-        {
-            "success": 55,
-            "destroy": 0
-        },
-        {
-            "success": 50,
-            "destroy": 0
-        },
-        {
-            "success": 45,
-            "destroy": 0
-        },
-        {
-            "success": 40,
-            "destroy": 0
-        },
-        {
-            "success": 35,
-            "destroy": 0
-        },
-        {
-            "success": 30,
-            "destroy": 0
-        },
-        {
-            "success": 30,
-            "destroy": 2.1
-        },
-        {
-            "success": 30,
-            "destroy": 2.1
-        },
-        {
-            "success": 30,
-            "destroy": 2.1
-        },
-        {
-            "success": 30,
-            "destroy": 2.8
-        },
-        {
-            "success": 30,
-            "destroy": 2.8
-        },
-        {
-            "success": 30,
-            "destroy": 7
-        },
-        {
-            "success": 30,
-            "destroy": 7
-        },
-        {
-            "success": 3,
-            "destroy": 19.4
-        },
-        {
-            "success": 2,
-            "destroy": 29.4
-        },
-        {
-            "success": 1,
-            "destroy": 39.6
-        }
-    ],
-    "keeplevel": [
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        false,
-        false,
-        false,
-        false,
-        true,
-        false,
-        false,
-        false,
-        false
-    ]
+  "percentage": [
+    {
+      "success": 95,
+      "destroy": 0
+    },
+    {
+      "success": 90,
+      "destroy": 0
+    },
+    {
+      "success": 85,
+      "destroy": 0
+    },
+    {
+      "success": 85,
+      "destroy": 0
+    },
+    {
+      "success": 80,
+      "destroy": 0
+    },
+    {
+      "success": 75,
+      "destroy": 0
+    },
+    {
+      "success": 70,
+      "destroy": 0
+    },
+    {
+      "success": 65,
+      "destroy": 0
+    },
+    {
+      "success": 60,
+      "destroy": 0
+    },
+    {
+      "success": 55,
+      "destroy": 0
+    },
+    {
+      "success": 50,
+      "destroy": 0
+    },
+    {
+      "success": 45,
+      "destroy": 0
+    },
+    {
+      "success": 40,
+      "destroy": 0
+    },
+    {
+      "success": 35,
+      "destroy": 0
+    },
+    {
+      "success": 30,
+      "destroy": 0
+    },
+    {
+      "success": 30,
+      "destroy": 2.1
+    },
+    {
+      "success": 30,
+      "destroy": 2.1
+    },
+    {
+      "success": 15,
+      "destroy": 6.8
+    },
+    {
+      "success": 15,
+      "destroy": 6.8
+    },
+    {
+      "success": 15,
+      "destroy": 8.5
+    },
+    {
+      "success": 30,
+      "destroy": 10.5
+    },
+    {
+      "success": 15,
+      "destroy": 12.75
+    },
+    {
+      "success": 15,
+      "destroy": 17
+    },
+    {
+      "success": 10,
+      "destroy": 18
+    },
+    {
+      "success": 10,
+      "destroy": 18
+    },
+    {
+      "success": 10,
+      "destroy": 18
+    },
+    {
+      "success": 7,
+      "destroy": 18.6
+    },
+    {
+      "success": 5,
+      "destroy": 19
+    },
+    {
+      "success": 3,
+      "destroy": 19.4
+    },
+    {
+      "success": 1,
+      "destroy": 19.8
+    }
+  ]
 }
