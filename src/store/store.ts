@@ -41,6 +41,7 @@ const initialState: CurrentState = {
   bonusUnderTen: false,
   eventDC30: false,
   successOnFives: false,
+  reduceDestroy: false,
   autoIntervalID: null,
 };
 
@@ -354,25 +355,35 @@ const simulSlice = createSlice({
         eventDC30: state.eventDC30,
       });
     },
-    // 샤이닝 스타포스(5, 10, 15에서 100% + 강화 비용 30% 할인) 적용
-    setShiningStarforce: (state) => {
-      state.successOnFives = true;
-      state.eventDC30 = true;
-      state.bonusUnderTen = false; // 온전히 샤이닝스타포스만 적용하기 위함
-
+    // 스타포스 21성 이하에서 강화 시도 시 파괴확률 30% 감소
+    setReduceDestroy: (state, action: PayloadAction<boolean>) => {
+      state.reduceDestroy = action.payload;
       // 확률 적용
-      if (state.successOnFives && [5, 10, 15].includes(state.currentStar)) {
-        state.successPercent = 100;
-        state.failurePercent = 0;
-        state.destroyPercent = 0;
+      if (state.reduceDestroy && state.currentStar <= 21) {
+        state.destroyPercent =
+          reinforceData.percentage[state.currentStar].destroy * 0.7;
       } else {
-        state.successPercent =
-          reinforceData.percentage[state.currentStar].success;
         state.destroyPercent =
           reinforceData.percentage[state.currentStar].destroy;
-        state.failurePercent =
-          100 - state.successPercent - state.destroyPercent;
       }
+      state.failurePercent = 100 - state.successPercent - state.destroyPercent;
+    },
+    // 샤이닝 스타포스(5, 10, 15에서 100% + 강화 비용 30% 할인) 적용
+    setShiningStarforce: (state) => {
+      state.successOnFives = false;
+      state.eventDC30 = true;
+      state.bonusUnderTen = false;
+      state.reduceDestroy = true; // 온전히 샤이닝스타포스만 적용하기 위함
+
+      // 확률 적용
+      if (state.reduceDestroy && state.currentStar <= 21) {
+        state.destroyPercent =
+          reinforceData.percentage[state.currentStar].destroy * 0.7;
+      } else {
+        state.destroyPercent =
+          reinforceData.percentage[state.currentStar].destroy;
+      }
+      state.failurePercent = 100 - state.successPercent - state.destroyPercent;
 
       // 확률 변동에 따라 cost 재계산(파괴방지에 의한 패널티 추가/제거 위함)
       state.cost = getActualCost({
@@ -405,6 +416,7 @@ export const {
   setBonusUnderTen,
   setEventDC30,
   setSuccessOnFives,
+  setReduceDestroy,
   setShiningStarforce,
   setAutoIntervalID,
 } = simulSlice.actions;
