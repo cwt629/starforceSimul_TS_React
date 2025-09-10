@@ -9,18 +9,12 @@ export interface InitialData {
   restoreCost: number;
 }
 
-export interface LogData {
-  result: Result;
-  from: number;
-  to: number;
-  fallen: boolean; // 등급 하락 여부(찬스타임 구현 위함)
-}
-
 export interface CurrentState {
   ready: boolean;
   level: number;
   start: number;
   goal: number;
+  lastResult?: Result;
   maxStar: number;
   restoreCost: bigint;
   totalSpent: bigint;
@@ -36,7 +30,7 @@ export interface CurrentState {
   destroyPercent: number;
   noStarcatch: boolean;
   preventDestroy: boolean;
-  log: LogData[];
+  fallen: [boolean, boolean];
   achieved: boolean;
   ableToFall: boolean;
   autoSaved: boolean; // 자동 저장이 되었는지 여부

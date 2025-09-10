@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { LogData } from "../type/state";
 import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
 import StarDisplay from "./StarDisplay";
@@ -47,7 +46,9 @@ function LeaderBoard() {
   const ableToFall: boolean = useSelector(
     (state: RootState) => state.ableToFall
   );
-  const log: LogData[] = useSelector((state: RootState) => state.log);
+  const fallen: [boolean, boolean] = useSelector(
+    (state: RootState) => state.fallen
+  );
   const mvpRank: MVPRank = useSelector((state: RootState) => state.mvpRank);
   const pcRoomApplied: boolean = useSelector(
     (state: RootState) => state.pcRoomApplied
@@ -66,7 +67,9 @@ function LeaderBoard() {
   const autoIntervalID: AutoInterval = useSelector(
     (state: RootState) => state.autoIntervalID
   );
-  const recentResult: number = log.length > 0 ? log[log.length - 1].result : -1;
+  const lastResult: Result | undefined = useSelector(
+    (state: RootState) => state.lastResult
+  );
 
   const MVPRankName: string =
     mvpRank === MVPRank.bronze
@@ -160,21 +163,21 @@ function LeaderBoard() {
             <td
               colSpan={3}
               className={
-                recentResult === Result.success
+                lastResult === Result.success
                   ? "custom-bg-success"
-                  : recentResult === Result.failure
+                  : lastResult === Result.failure
                   ? "custom-bg-failure"
-                  : recentResult === Result.destroy
+                  : lastResult === Result.destroy
                   ? "custom-bg-destroy"
                   : ""
               }
             >
               <div className="result-board">
-                {recentResult === Result.success
+                {lastResult === Result.success
                   ? "강화 성공!"
-                  : recentResult === Result.failure
+                  : lastResult === Result.failure
                   ? "강화 실패"
-                  : recentResult === Result.destroy
+                  : lastResult === Result.destroy
                   ? "장비 파괴..."
                   : "강화를 진행하세요."}
               </div>
@@ -187,11 +190,11 @@ function LeaderBoard() {
           </tr>
           <tr
             className={
-              recentResult === Result.success
+              lastResult === Result.success
                 ? "success"
-                : recentResult === Result.failure
+                : lastResult === Result.failure
                 ? "failure"
-                : recentResult === Result.destroy
+                : lastResult === Result.destroy
                 ? "destroy"
                 : ""
             }
@@ -205,7 +208,7 @@ function LeaderBoard() {
               <div>
                 <StarDisplay />
                 <div className="upgrade-info">
-                  {isChance(log) ? <div>CHANCE TIME!</div> : ""}
+                  {isChance(fallen) ? <div>CHANCE TIME!</div> : ""}
                   현재 강화: {currentStar}성 {">"} {nextStar}성<br />
                   {currentStar < maxStar ? (
                     <>

@@ -2,13 +2,13 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrentState, InitialData } from "../type/state";
 import { getMaximumStarByLevel } from "../utils/reinforce";
 import { getActualCost, getUpgradeCost } from "../utils/cost";
-import { Result } from "../type/result";
 import { isChance } from "../utils/chance";
 import { saveLogOnStorage } from "../utils/storage";
 import { UserLog } from "../type/storage";
 import { MVPRank } from "../type/discount";
 import { AutoInterval } from "../type/auto";
 import reinforceData from "../data/reinforce-data.json";
+import { Result } from "../type/result";
 
 const STAR_WHEN_DESTROYED: number = 12; // 파괴될 시 이동되는 단계
 
@@ -17,6 +17,7 @@ const initialState: CurrentState = {
   level: 0,
   start: 0,
   goal: 0,
+  lastResult: undefined,
   maxStar: 0,
   restoreCost: BigInt(0),
   totalSpent: BigInt(0),
@@ -32,7 +33,7 @@ const initialState: CurrentState = {
   destroyPercent: 0,
   noStarcatch: false,
   preventDestroy: false,
-  log: [],
+  fallen: [false, false],
   achieved: false,
   ableToFall: false,
   autoSaved: false,
@@ -56,6 +57,7 @@ const simulSlice = createSlice({
       state.start = action.payload.start;
       state.goal = action.payload.goal;
       state.maxStar = getMaximumStarByLevel(action.payload.level);
+      state.lastResult = undefined;
       state.restoreCost = BigInt(action.payload.restoreCost);
       state.totalSpent = BigInt(0);
       state.totalSuccess = 0;
@@ -81,7 +83,7 @@ const simulSlice = createSlice({
       }
       state.noStarcatch = false;
       state.preventDestroy = false;
-      state.log = [];
+      state.fallen = [false, false];
       state.achieved = false;
       state.autoSaved = false;
       state.mvpRank = MVPRank.bronze;
@@ -93,13 +95,8 @@ const simulSlice = createSlice({
     },
     // 성공 처리
     grantSuccess: (state) => {
-      // log 저장
-      state.log.push({
-        result: Result.success,
-        from: state.currentStar,
-        to: state.currentStar + 1,
-        fallen: false,
-      });
+      state.lastResult = Result.success;
+      state.fallen = [state.fallen[1], false];
       state.totalSpent += state.cost;
       state.totalSuccess++;
       state.currentStar = state.nextStar;
@@ -145,16 +142,12 @@ const simulSlice = createSlice({
     },
     // 실패 처리
     grantFailure: (state) => {
+      state.lastResult = Result.failure;
       const nextStar: number = state.ableToFall
         ? state.currentStar - 1
         : state.currentStar;
-      // log 저장
-      state.log.push({
-        result: Result.failure,
-        from: state.currentStar,
-        to: nextStar,
-        fallen: state.ableToFall,
-      });
+      // 등급이 하락한 경우를 고려하여 fallen 지정
+      state.fallen = [state.fallen[1], state.currentStar > nextStar];
       state.totalSpent += state.cost;
       state.totalFailure++;
       state.currentStar = nextStar;
@@ -180,7 +173,7 @@ const simulSlice = createSlice({
       state.ableToFall = false;
 
       // 찬스타임 구현
-      if (isChance(state.log)) {
+      if (isChance(state.fallen)) {
         state.successPercent = 100;
         state.failurePercent = 0;
         state.destroyPercent = 0;
@@ -199,13 +192,8 @@ const simulSlice = createSlice({
     },
     // 파괴 처리
     grantDestroy: (state) => {
-      // log 저장
-      state.log.push({
-        result: Result.destroy,
-        from: state.currentStar,
-        to: STAR_WHEN_DESTROYED,
-        fallen: false,
-      });
+      state.lastResult = Result.destroy;
+      state.fallen = [state.fallen[1], false];
       state.totalSpent += state.cost + state.restoreCost;
       state.totalDestroy++;
       state.currentStar = STAR_WHEN_DESTROYED;
@@ -262,7 +250,6 @@ const simulSlice = createSlice({
       let userLog: UserLog = {
         title: action.payload,
         date: new Date(),
-        log: state.log,
         setting: {
           level: state.level,
           start: state.start,
