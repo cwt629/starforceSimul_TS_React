@@ -5,6 +5,7 @@ import { deleteLogInStorage, getLogInStorage } from "../../utils/storage";
 import DestroyBadge from "./badges/DestroyBadge";
 import FailureBadge from "./badges/FailureBadge";
 import SuccessBadge from "./badges/SuccessBadge";
+import star_filled from "../../images/star_filled.png";
 
 function Log() {
   const [storageLog, setStorageLog] = useState(getLogInStorage());
@@ -34,25 +35,50 @@ function Log() {
               <tbody>
                 <tr>
                   <td colSpan={3}>
-                    <b>{data.title}</b>
+                    <b style={{ wordBreak: "break-all" }}>{data.title}</b>
+                    <div className="datetime">
+                      {getFormattedDate(data.date.toLocaleString())}
+                    </div>
                   </td>
                 </tr>
                 <tr>
-                  <td colSpan={2}>
-                    {getFormattedDate(data.date.toLocaleString())}
+                  <td>Lv.{data.setting.level}</td>
+                  <td>
+                    <div className="star-goal">
+                      <img
+                        alt="star"
+                        src={star_filled}
+                        className="star"
+                        style={{ margin: "0 4px" }}
+                      />
+                      {data.setting.start}&nbsp;
+                      {">"}&nbsp;
+                      <img
+                        alt="star"
+                        src={star_filled}
+                        className="star"
+                        style={{ margin: "0 4px" }}
+                      />
+                      {data.setting.goal}
+                    </div>
                   </td>
                   <td>
-                    목표: {data.setting.start}&nbsp;{">"}&nbsp;
-                    {data.setting.goal}
+                    <i
+                      className="bi bi-x-circle log-delbtn"
+                      onClick={() => handleDeleteClick(index, data.title)}
+                    ></i>
                   </td>
                 </tr>
                 <tr>
                   <td colSpan={3}>
-                    총 강화 횟수{" "}
-                    {data.total.success +
-                      data.total.failure +
-                      data.total.destroy}
-                    회<br />
+                    총{" "}
+                    <b>
+                      {data.total.success +
+                        data.total.failure +
+                        data.total.destroy}
+                    </b>
+                    회 강화
+                    <br />
                     <SuccessBadge />
                     &nbsp;{data.total.success}&nbsp;
                     <FailureBadge />
@@ -63,7 +89,8 @@ function Log() {
                 </tr>
                 <tr>
                   <td colSpan={3}>
-                    총 {BigInt(data.total.cost).toLocaleString()}메소 소모
+                    총 비용: <b>{BigInt(data.total.cost).toLocaleString()}</b>
+                    메소
                     <br />
                     (복구 비용 설정:{" "}
                     {BigInt(data.setting.restoreCost).toLocaleString()}메소)
@@ -71,11 +98,6 @@ function Log() {
                 </tr>
               </tbody>
             </table>
-
-            <i
-              className="bi bi-x log-delbtn"
-              onClick={() => handleDeleteClick(index, data.title)}
-            ></i>
           </div>
         ))
       ) : (

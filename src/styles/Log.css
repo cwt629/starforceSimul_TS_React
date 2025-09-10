@@ -1,59 +1,67 @@
 .App {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 ul.log-notice-list {
-    text-align: left;
+  text-align: left;
 }
 
-div.log-list>div {
-    width: 100%;
-    padding: 20px;
+div.log-list > div {
+  width: 100%;
+  padding: 20px;
 }
 
 div.log-list * {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 div.log-item {
-    position: relative;
+  position: relative;
 }
 
 div.log-detail-div {
-    width: 80%;
+  width: 80%;
 }
 
 ul.log-detail {
-    margin: 10px auto;
-    max-height: 490px;
-    overflow-y: auto;
+  margin: 10px auto;
+  max-height: 490px;
+  overflow-y: auto;
 }
 
-ul.log-detail>li {
-    padding: 10px 20px;
-    width: 100%;
+ul.log-detail > li {
+  padding: 10px 20px;
+  width: 100%;
 }
 
 ul.log-detail table.log-result-table {
-    width: 100%;
+  width: 100%;
 }
 
-ul.log-detail>button.shrinker {
-    margin-top: 10px;
-    margin-bottom: -20px;
+ul.log-detail > button.shrinker {
+  margin-top: 10px;
+  margin-bottom: -20px;
 }
 
 i.log-delbtn {
-    position: absolute;
-    top: -10px;
-    right: -3px;
-    color: red;
-    font-size: 28px;
-    cursor: pointer;
+  color: red;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+div.datetime {
+  font-size: 0.9em;
+  color: gray;
+}
+
+div.star-goal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* badge들 */
 span.badge.result-badge {
-    position: relative;
-    top: -1.5px;
+  position: relative;
+  top: -1.5px;
 }
