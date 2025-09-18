@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/starforceSimul_TS_React/static/css/main.8aa027aa.css",
-    "main.js": "/starforceSimul_TS_React/static/js/main.430a52da.js",
+    "main.css": "/starforceSimul_TS_React/static/css/main.eca4db93.css",
+    "main.js": "/starforceSimul_TS_React/static/js/main.0a748fd1.js",
     "static/js/453.368e6f8b.chunk.js": "/starforceSimul_TS_React/static/js/453.368e6f8b.chunk.js",
     "index.html": "/starforceSimul_TS_React/index.html",
-    "main.8aa027aa.css.map": "/starforceSimul_TS_React/static/css/main.8aa027aa.css.map",
-    "main.430a52da.js.map": "/starforceSimul_TS_React/static/js/main.430a52da.js.map",
+    "main.eca4db93.css.map": "/starforceSimul_TS_React/static/css/main.eca4db93.css.map",
+    "main.0a748fd1.js.map": "/starforceSimul_TS_React/static/js/main.0a748fd1.js.map",
     "453.368e6f8b.chunk.js.map": "/starforceSimul_TS_React/static/js/453.368e6f8b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8aa027aa.css",
-    "static/js/main.430a52da.js"
+    "static/css/main.eca4db93.css",
+    "static/js/main.0a748fd1.js"
   ]
 }
