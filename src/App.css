@@ -34,7 +34,7 @@ td.custom-bg-destroy {
 }
 
 /* BreadCrumb 컴포넌트 */
-ul.breadcrumb>li {
+ul.breadcrumb > li {
   cursor: pointer;
 }
 
@@ -61,10 +61,9 @@ div.options div.form-check {
   align-items: center;
 }
 
-div.options div.form-check>* {
+div.options div.form-check > * {
   padding: 0 5px;
 }
-
 
 div.simul-options {
   position: relative;
@@ -109,19 +108,19 @@ div.upgrade-info {
   overflow-y: auto;
 }
 
-#leaderboard table.setting-table>tbody>tr>td:nth-child(2) {
+#leaderboard table.setting-table > tbody > tr > td:nth-child(2) {
   text-align: left;
 }
 
-tr.success>td.success-count {
+tr.success > td.success-count {
   background-color: var(--success-bg-color);
 }
 
-tr.failure>td.failure-count {
+tr.failure > td.failure-count {
   background-color: var(--failure-bg-color);
 }
 
-tr.destroy>td.destroy-count {
+tr.destroy > td.destroy-count {
   background-color: var(--destroy-bg-color);
 }
 
@@ -172,7 +171,6 @@ ul.simul-tabs span.nav-link {
   cursor: pointer;
 }
 
-
 div.manual-option-block,
 div.auto-option-block {
   display: flex;
@@ -208,7 +206,7 @@ div.auto-prevention-block div.auto-prevention-text {
   font-weight: 600;
 }
 
-div.auto-prevention-block div.auto-prevention-text>span.auto-spinner {
+div.auto-prevention-block div.auto-prevention-text > span.auto-spinner {
   position: relative;
   top: 11px;
 }
@@ -218,7 +216,7 @@ div.option-ingame {
   flex-wrap: wrap;
 }
 
-div.option-ingame>div {
+div.option-ingame > div {
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -228,6 +226,6 @@ div.simulator div.form-check {
   align-items: center;
 }
 
-div.simulator div.form-check>* {
+div.simulator div.form-check > * {
   padding: 0 5px;
 }

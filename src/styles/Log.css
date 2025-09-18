@@ -6,6 +6,14 @@ ul.log-notice-list {
   text-align: left;
 }
 
+ul.log-pagination > li {
+  margin: 0;
+}
+
+ul.log-pagination > li.page-item {
+  cursor: pointer;
+}
+
 div.log-list > div {
   width: 100%;
   padding: 20px;
